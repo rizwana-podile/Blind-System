@@ -1,0 +1,7 @@
+<resources>
+    <style name="Theme.SightGuide" parent="android:Theme.Material.NoActionBar">
+        <item name="android:statusBarColor">@color/high_contrast_black</item>
+        <item name="android:navigationBarColor">@color/high_contrast_black</item>
+        <item name="android:windowBackground">@color/high_contrast_black</item>
+    </style>
+</resources>

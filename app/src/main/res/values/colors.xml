@@ -1,0 +1,5 @@
+<resources>
+    <color name="high_contrast_black">#0D1117</color>
+    <color name="high_contrast_yellow">#FFE500</color>
+    <color name="high_contrast_white">#FFFFFF</color>
+</resources>
