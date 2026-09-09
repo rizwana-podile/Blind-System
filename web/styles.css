@@ -1,0 +1,811 @@
+/* ==========================================================================
+   SIGHTGUIDE High-Contrast Accessible Design System (WCAG 2.2 AAA Compliant)
+   ========================================================================== */
+
+:root {
+  --bg-primary: #0D1117;
+  --bg-surface: #161B22;
+  --bg-surface-elevated: #21262D;
+  --text-primary: #FFFFFF;
+  --text-secondary: #E6EDF3;
+  --accent-primary: #FFE500; /* Safety High-Vis Yellow (>12:1 contrast) */
+  --accent-on-primary: #000000;
+  --accent-critical: #FF453A; /* Safety Alert Red */
+  --accent-on-critical: #FFFFFF;
+  --accent-success: #30D158; /* Safe Affirmation Green */
+  --accent-on-success: #000000;
+  --border-prominent: 2.5px solid #FFE500;
+  --border-subtle: 1.5px solid #30363D;
+  --focus-ring: 4px solid #FFE500;
+  --font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+}
+
+body.theme-light {
+  --bg-primary: #FFFFFF;
+  --bg-surface: #F6F8FA;
+  --bg-surface-elevated: #EAEEF2;
+  --text-primary: #000000;
+  --text-secondary: #24292F;
+  --accent-primary: #003882; /* Deep Cobalt Blue (>8.5:1 contrast) */
+  --accent-on-primary: #FFFFFF;
+  --accent-critical: #B00020;
+  --accent-on-critical: #FFFFFF;
+  --accent-success: #0B6623;
+  --accent-on-success: #FFFFFF;
+  --border-prominent: 2.5px solid #003882;
+  --border-subtle: 1.5px solid #D0D7DE;
+  --focus-ring: 4px solid #003882;
+}
+
+/* Accessibility & Screen Reader Essentials */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: -60px;
+  left: 10px;
+  background: var(--accent-primary);
+  color: var(--accent-on-primary);
+  padding: 12px 20px;
+  font-weight: 700;
+  z-index: 9999;
+  border-radius: var(--radius-sm);
+  transition: top 0.2s;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 10px;
+  outline: var(--focus-ring);
+}
+
+/* Reset & Global Typography */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  line-height: 1.5;
+  font-size: 18px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  overflow-x: hidden;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  user-select: none;
+}
+
+button:focus-visible,
+div[tabindex="0"]:focus-visible,
+input:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 3px;
+}
+
+/* App Viewport Container */
+.app-container {
+  width: 100%;
+  max-width: 520px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-primary);
+  border-left: var(--border-subtle);
+  border-right: var(--border-subtle);
+  padding-bottom: 70px;
+}
+
+/* Header & Brand */
+.app-header {
+  padding: 18px 20px 10px;
+  background: var(--bg-surface);
+  border-bottom: var(--border-subtle);
+}
+
+.brand-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.brand-title {
+  font-size: 30px;
+  font-weight: 900;
+  color: var(--accent-primary);
+  letter-spacing: 1.5px;
+}
+
+.btn-chip {
+  background: var(--bg-surface-elevated);
+  color: var(--text-primary);
+  border: 1.5px solid var(--accent-primary);
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 15px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-chip.btn-active {
+  background: var(--accent-primary);
+  color: var(--accent-on-primary);
+}
+
+/* Vitals Status Bar */
+.vitals-bar {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.vital-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-surface-elevated);
+  border: 1.5px solid var(--accent-primary);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--text-primary);
+}
+
+/* Master Voice Assistant Trigger Button */
+.voice-assistant-section {
+  padding: 16px 20px 8px;
+}
+
+.btn-voice-master {
+  width: 100%;
+  min-height: 72px;
+  background: var(--accent-primary);
+  color: var(--accent-on-primary);
+  border: 3px solid var(--accent-on-primary);
+  border-radius: var(--radius-lg);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.15s, background-color 0.2s;
+}
+
+.btn-voice-master:active {
+  transform: scale(0.98);
+}
+
+.btn-voice-master.listening {
+  background: var(--accent-critical);
+  color: var(--accent-on-critical);
+  border-color: var(--accent-primary);
+  animation: pulse-ring 1.5s infinite;
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(255, 69, 58, 0.7); }
+  70% { box-shadow: 0 0 0 16px rgba(255, 69, 58, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 69, 58, 0); }
+}
+
+.voice-icon {
+  font-size: 32px;
+}
+
+.voice-labels {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.voice-title {
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.voice-subtitle {
+  font-size: 15px;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+/* Main View Panel Manager */
+.content-viewport {
+  flex: 1;
+  padding: 12px 20px 24px;
+}
+
+.view-panel {
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+  animation: fadeIn 0.2s ease-in;
+}
+
+.view-panel.active {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 4px;
+}
+
+.btn-back {
+  background: var(--bg-surface-elevated);
+  color: var(--accent-primary);
+  border: 2px solid var(--accent-primary);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.panel-title {
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--text-primary);
+}
+
+/* Tiles Grid (Dashboard) */
+.tiles-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.action-tile {
+  min-height: 96px; /* Massive tactile touch area exceeding guidelines */
+  background: var(--bg-surface);
+  border: var(--border-prominent);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  text-align: left;
+  transition: background-color 0.15s, transform 0.1s;
+}
+
+.action-tile:hover {
+  background: var(--bg-surface-elevated);
+}
+
+.action-tile:active {
+  transform: scale(0.985);
+}
+
+.action-tile.tile-critical {
+  border-color: var(--accent-critical);
+  background: #200d0d;
+}
+
+body.theme-light .action-tile.tile-critical {
+  background: #ffebee;
+}
+
+.tile-icon {
+  font-size: 38px;
+  flex-shrink: 0;
+}
+
+.tile-info {
+  flex: 1;
+}
+
+.tile-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+  display: block;
+}
+
+.tile-desc {
+  font-size: 15px;
+  color: var(--text-secondary);
+  display: block;
+  margin-top: 2px;
+}
+
+.tile-arrow {
+  font-size: 22px;
+  color: var(--accent-primary);
+}
+
+/* Accessible Cards */
+.card {
+  background: var(--bg-surface);
+  border: var(--border-prominent);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Accessible Buttons */
+.button-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.button-row {
+  display: flex;
+  gap: 12px;
+}
+
+.button-row .btn-accessible {
+  flex: 1;
+}
+
+.btn-accessible {
+  min-height: 56px;
+  background: var(--bg-surface-elevated);
+  color: var(--text-primary);
+  border: 2px solid var(--accent-primary);
+  border-radius: var(--radius-md);
+  padding: 14px 20px;
+  font-size: 18px;
+  font-weight: 800;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: transform 0.1s, background-color 0.15s;
+}
+
+.btn-accessible:hover {
+  background: var(--accent-primary);
+  color: var(--accent-on-primary);
+}
+
+.btn-accessible:active {
+  transform: scale(0.98);
+}
+
+.btn-accessible.btn-primary {
+  background: var(--accent-primary);
+  color: var(--accent-on-primary);
+  border-color: var(--accent-on-primary);
+}
+
+.btn-accessible.btn-danger {
+  border-color: var(--accent-critical);
+  color: var(--accent-critical);
+}
+
+.btn-accessible.btn-danger:hover {
+  background: var(--accent-critical);
+  color: var(--accent-on-critical);
+}
+
+.btn-accessible.btn-secondary {
+  border-color: var(--text-secondary);
+  color: var(--text-primary);
+}
+
+/* Advisory Card */
+.advisory-card {
+  background: var(--bg-surface-elevated);
+  border: 2px solid var(--accent-primary);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.advisory-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.advisory-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Navigation Screen Styling */
+.compass-card {
+  align-items: center;
+  text-align: center;
+  padding: 24px 20px;
+}
+
+.compass-dial {
+  margin: 14px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.compass-needle {
+  width: 10px;
+  height: 56px;
+  background: var(--accent-critical);
+  border-radius: 5px;
+  transform-origin: center;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(255, 69, 58, 0.8);
+}
+
+.compass-reading {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--accent-primary);
+}
+
+.compass-controls {
+  display: flex;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.instruction-main {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.instruction-sub {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--accent-success);
+}
+
+/* Camera Screen Styling */
+.viewfinder-box {
+  width: 100%;
+  height: 240px;
+  background: #000000;
+  border: var(--border-prominent);
+  border-radius: var(--radius-lg);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#camera-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#camera-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.viewfinder-tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(13, 17, 23, 0.85);
+  color: var(--accent-primary);
+  border: 1px solid var(--accent-primary);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.scene-summary-text {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Reader OCR Screen */
+.document-badge {
+  align-self: flex-start;
+  background: var(--accent-primary);
+  color: var(--accent-on-primary);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.ocr-text-box {
+  background: var(--bg-surface-elevated);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  font-family: monospace;
+  font-size: 16px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  max-height: 150px;
+  overflow-y: auto;
+  color: var(--text-primary);
+}
+
+.highlight-callout {
+  background: rgba(48, 209, 88, 0.15);
+  border: 1.5px solid var(--accent-success);
+  color: var(--accent-success);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-weight: 800;
+}
+
+.sample-docs-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.sample-label {
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Nearby Amenities Screen */
+.filter-chips-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.filter-chip {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1.5px solid var(--accent-primary);
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 15px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.filter-chip.active {
+  background: var(--accent-primary);
+  color: var(--accent-on-primary);
+}
+
+.places-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.place-item-card {
+  background: var(--bg-surface);
+  border: var(--border-prominent);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.place-name {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.place-meta {
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+.place-metrics {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--accent-success);
+}
+
+/* Safety & Emergency SOS Screen */
+.sos-banner {
+  background: var(--accent-critical);
+  color: var(--accent-on-critical);
+  border: 3px solid var(--accent-primary);
+  border-radius: var(--radius-lg);
+  padding: 24px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  animation: pulse-ring 1s infinite;
+}
+
+.sos-banner.hidden {
+  display: none;
+}
+
+.sos-banner-header {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.sos-timer-number {
+  font-size: 64px;
+  font-weight: 900;
+  color: var(--accent-primary);
+  line-height: 1;
+}
+
+.btn-cancel-sos {
+  background: #000000;
+  color: #FFFFFF;
+  border: 3px solid #FFFFFF;
+  font-size: 20px;
+  width: 100%;
+}
+
+.btn-giant-sos {
+  width: 100%;
+  min-height: 120px;
+  background: #B00020;
+  color: #FFFFFF;
+  border: 4px solid var(--accent-primary);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 6px 18px rgba(255, 69, 58, 0.4);
+}
+
+.btn-giant-sos:active {
+  transform: scale(0.97);
+}
+
+.sos-icon {
+  font-size: 40px;
+}
+
+.sos-title {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.sos-sub {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.contact-name {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.contact-phone {
+  font-size: 16px;
+  color: var(--accent-success);
+  font-weight: 700;
+}
+
+.pairing-box {
+  background: var(--bg-surface-elevated);
+  border: 2px solid var(--accent-primary);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+}
+
+.pairing-box strong {
+  font-size: 26px;
+  color: var(--accent-primary);
+  letter-spacing: 2px;
+}
+
+/* Settings Screen */
+.setting-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.setting-title {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.setting-desc {
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+.accessible-slider {
+  width: 100%;
+  height: 38px;
+  accent-color: var(--accent-primary);
+  cursor: pointer;
+}
+
+.setting-toggle-card {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Bottom Guidance Bar */
+.app-footer {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 520px;
+  background: var(--bg-surface);
+  border-top: var(--border-prominent);
+  padding: 12px 20px;
+  text-align: center;
+  z-index: 100;
+}
+
+.footer-text {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent-primary);
+}

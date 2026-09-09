@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGHTGUIDE — Assistive Technology Platform</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body class="theme-dark">
+
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Live Spoken Accessibility Announcer Region -->
+  <div id="live-announcer" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
+
+  <div class="app-container">
+
+    <!-- Top App Bar & System Vitals -->
+    <header class="app-header">
+      <div class="brand-row">
+        <h1 class="brand-title">SIGHTGUIDE</h1>
+        <button id="btn-theme-toggle" class="btn-chip" aria-label="Toggle high contrast theme">
+          <span class="icon">🌓</span> <span id="theme-label">Dark Theme</span>
+        </button>
+      </div>
+
+      <!-- Vitals Status Chips -->
+      <div class="vitals-bar" role="status" aria-label="System status indicators">
+        <div class="vital-badge" id="badge-gps" tabindex="0" role="button" aria-label="GPS Status: Active with high precision">
+          <span class="vital-icon">📍</span>
+          <span class="vital-text" id="gps-status-text">GPS: High</span>
+        </div>
+        <div class="vital-badge" id="badge-battery" tabindex="0" role="button" aria-label="Battery Status: 88 percent">
+          <span class="vital-icon">🔋</span>
+          <span class="vital-text" id="battery-status-text">Battery: 88%</span>
+        </div>
+        <div class="vital-badge" id="badge-network" tabindex="0" role="button" aria-label="Network Status: Online">
+          <span class="vital-icon">📶</span>
+          <span class="vital-text" id="network-status-text">Online</span>
+        </div>
+        <div class="vital-badge" id="badge-sharing" tabindex="0" role="button" aria-label="Caregiver Location Sharing: Disabled">
+          <span class="vital-icon">🛡️</span>
+          <span class="vital-text" id="sharing-status-text">Private</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Master Voice Assistant Trigger -->
+    <section class="voice-assistant-section">
+      <button id="btn-voice-trigger" class="btn-voice-master" aria-label="Voice Assistant. Tap to activate microphone and speak your command.">
+        <div class="mic-pulse-ring"></div>
+        <span class="voice-icon">🎙️</span>
+        <div class="voice-labels">
+          <span class="voice-title" id="voice-title-text">Voice Assistant</span>
+          <span class="voice-subtitle" id="voice-status-text">Tap or press Space to Speak</span>
+        </div>
+      </button>
+    </section>
+
+    <!-- Main Navigation Content Container -->
+    <main id="main-content" class="content-viewport">
+
+      <!-- 1. DASHBOARD VIEW -->
+      <section id="view-dashboard" class="view-panel active" aria-labelledby="heading-dashboard">
+        <h2 id="heading-dashboard" class="sr-only">Main Menu</h2>
+        <div class="tiles-grid">
+          <button class="action-tile" data-target="navigation" aria-label="Navigate. Compass heading, pedestrian walking directions, and where am I. Double tap to open.">
+            <span class="tile-icon">🧭</span>
+            <div class="tile-info">
+              <span class="tile-title">Navigate</span>
+              <span class="tile-desc">Compass, walking turns, where am I</span>
+            </div>
+            <span class="tile-arrow">➔</span>
+          </button>
+
+          <button class="action-tile" data-target="camera" aria-label="Camera. Obstacle detection, scene description, and find items. Double tap to open.">
+            <span class="tile-icon">📷</span>
+            <div class="tile-info">
+              <span class="tile-title">Camera</span>
+              <span class="tile-desc">Obstacle detection, scene description</span>
+            </div>
+            <span class="tile-arrow">➔</span>
+          </button>
+
+          <button class="action-tile" data-target="reader" aria-label="Read. OCR text scanner for documents, labels, signs, and menus. Double tap to open.">
+            <span class="tile-icon">📖</span>
+            <div class="tile-info">
+              <span class="tile-title">Read</span>
+              <span class="tile-desc">Read documents, signs, menus aloud</span>
+            </div>
+            <span class="tile-arrow">➔</span>
+          </button>
+
+          <button class="action-tile" data-target="nearby" aria-label="Nearby. Discover pharmacies, hospitals, transit, and ATMs. Double tap to open.">
+            <span class="tile-icon">🏥</span>
+            <div class="tile-info">
+              <span class="tile-title">Nearby</span>
+              <span class="tile-desc">Pharmacies, hospitals, ATMs, transit</span>
+            </div>
+            <span class="tile-arrow">➔</span>
+          </button>
+
+          <button class="action-tile tile-critical" data-target="safety" aria-label="Safety and Emergency SOS. Guarded countdown, emergency contacts, and location sharing. Double tap to open.">
+            <span class="tile-icon">🚨</span>
+            <div class="tile-info">
+              <span class="tile-title">Safety & SOS</span>
+              <span class="tile-desc">Guarded SOS, emergency contacts</span>
+            </div>
+            <span class="tile-arrow">➔</span>
+          </button>
+
+          <button class="action-tile" data-target="settings" aria-label="Settings. Speech rate, pitch, tactile feedback, and themes. Double tap to open.">
+            <span class="tile-icon">⚙️</span>
+            <div class="tile-info">
+              <span class="tile-title">Settings</span>
+              <span class="tile-desc">Speech rate, pitch, contrast, haptics</span>
+            </div>
+            <span class="tile-arrow">➔</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- 2. NAVIGATION VIEW -->
+      <section id="view-navigation" class="view-panel" aria-labelledby="heading-navigation">
+        <div class="panel-header">
+          <button class="btn-back" data-back="dashboard" aria-label="Back to dashboard">⬅ Back</button>
+          <h2 id="heading-navigation" class="panel-title">Walking Navigation</h2>
+        </div>
+
+        <div class="advisory-card" role="note">
+          <span class="advisory-icon">⚠️</span>
+          <span class="advisory-text">Assistive guidance only. Does not guarantee obstacle avoidance. Always use mobility cane or guide dog.</span>
+        </div>
+
+        <!-- Compass Heading Card -->
+        <div class="card compass-card" tabindex="0" role="region" aria-label="Compass heading">
+          <div class="card-label">Current Heading</div>
+          <div class="compass-dial">
+            <div class="compass-needle" id="compass-needle"></div>
+            <div class="compass-reading" id="compass-reading">NORTH (358°)</div>
+          </div>
+          <div class="compass-controls">
+            <button id="btn-turn-left" class="btn-secondary" aria-label="Simulate turning left">Turn Left</button>
+            <button id="btn-turn-right" class="btn-secondary" aria-label="Simulate turning right">Turn Right</button>
+          </div>
+        </div>
+
+        <!-- Live Walking Instruction -->
+        <div class="card instruction-card" role="region" aria-live="polite">
+          <div class="card-label">Active Guidance</div>
+          <div class="instruction-main" id="instruction-text">Facing North. Select destination or tap 'Where am I?'</div>
+          <div class="instruction-sub" id="distance-sub-text">Accuracy: High (3 meters)</div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="button-stack">
+          <button id="btn-where-am-i" class="btn-accessible" aria-label="Where am I? Tap to hear your current location and direction.">
+            📍 Where Am I?
+          </button>
+          <button id="btn-whats-direction" class="btn-accessible" aria-label="What is my direction? Tap to hear compass heading.">
+            🧭 What's My Direction?
+          </button>
+          <button id="btn-repeat-nav" class="btn-accessible" aria-label="Repeat last navigation instruction.">
+            🔄 Repeat Instruction
+          </button>
+          <button id="btn-open-maps" class="btn-accessible" aria-label="Open in Google Maps for external pedestrian routing.">
+            🗺️ Open in Google Maps
+          </button>
+          <button id="btn-stop-nav" class="btn-accessible btn-danger" aria-label="Stop navigation.">
+            ⏹️ Stop Navigation
+          </button>
+        </div>
+      </section>
+
+      <!-- 3. CAMERA ASSISTANCE VIEW -->
+      <section id="view-camera" class="view-panel" aria-labelledby="heading-camera">
+        <div class="panel-header">
+          <button class="btn-back" data-back="dashboard" aria-label="Back to dashboard">⬅ Back</button>
+          <h2 id="heading-camera" class="panel-title">Camera Assistance</h2>
+        </div>
+
+        <!-- Camera Viewfinder & Object Detection Canvas -->
+        <div class="viewfinder-box" tabindex="0" role="region" aria-label="Camera viewfinder with live obstacle analysis">
+          <video id="camera-video" playsinline muted autoplay></video>
+          <canvas id="camera-canvas"></canvas>
+          <div class="viewfinder-tag" id="camera-tag">Vision AI: Active</div>
+        </div>
+
+        <!-- Scene Understanding Card -->
+        <div class="card scene-card" role="region" aria-live="polite">
+          <div class="card-label">Surroundings & Obstacles</div>
+          <div class="scene-summary-text" id="scene-summary-text">
+            Analyzing video feed. Tap 'Describe Scene' to hear an audio summary.
+          </div>
+        </div>
+
+        <!-- Camera Action Buttons -->
+        <div class="button-stack">
+          <button id="btn-describe-scene" class="btn-accessible" aria-label="Describe Scene. Tap to speak full description of obstacles ahead.">
+            👁️ Describe Scene
+          </button>
+          <button id="btn-find-bottle" class="btn-accessible" aria-label="Find Bottle. Tap to search for water bottle in view.">
+            🔍 Find Bottle / Keys
+          </button>
+          <button id="btn-toggle-camera-source" class="btn-accessible btn-secondary" aria-label="Start or stop live camera video stream.">
+            📷 Toggle Live Camera
+          </button>
+        </div>
+      </section>
+
+      <!-- 4. OCR READER VIEW -->
+      <section id="view-reader" class="view-panel" aria-labelledby="heading-reader">
+        <div class="panel-header">
+          <button class="btn-back" data-back="dashboard" aria-label="Back to dashboard">⬅ Back</button>
+          <h2 id="heading-reader" class="panel-title">Document & OCR Reader</h2>
+        </div>
+
+        <!-- Document Preview & Status -->
+        <div class="card reader-card" role="region" aria-live="polite">
+          <div class="document-badge" id="doc-type-badge">Document: Receipt Detected</div>
+          <div class="card-label">Recognized Text</div>
+          <div class="ocr-text-box" id="ocr-display-text" tabindex="0">
+WALGREENS STORE #4829
+1 ASPIRIN 325MG     $8.99
+1 COTTON BANDAGES   $4.50
+SUBTOTAL           $13.49
+TAX                 $1.15
+TOTAL:             $14.64
+THANK YOU FOR SHOPPING WITH US!
+          </div>
+          <div class="highlight-callout" id="ocr-highlight-box">
+            💰 Key Highlight: Total $14.64
+          </div>
+        </div>
+
+        <!-- Sample Document Switcher for Testing -->
+        <div class="sample-docs-bar">
+          <span class="sample-label">Sample Docs:</span>
+          <button class="btn-chip" data-sample="receipt">Receipt</button>
+          <button class="btn-chip" data-sample="menu">Restaurant Menu</button>
+          <button class="btn-chip" data-sample="medicine">Medicine Label</button>
+          <button class="btn-chip" data-sample="sign">Caution Sign</button>
+        </div>
+
+        <!-- Audio Playback Controls -->
+        <div class="button-stack">
+          <button id="btn-read-now" class="btn-accessible btn-primary" aria-label="Read Now. Tap to read the recognized text aloud.">
+            ▶️ Read Aloud
+          </button>
+          <div class="button-row">
+            <button id="btn-pause-reader" class="btn-accessible" aria-label="Pause reading">
+              ⏸️ Pause
+            </button>
+            <button id="btn-resume-reader" class="btn-accessible" aria-label="Resume reading">
+              ⏯️ Resume
+            </button>
+          </div>
+          <button id="btn-repeat-reader" class="btn-accessible" aria-label="Repeat last sentence">
+            🔄 Repeat
+          </button>
+          <button id="btn-stop-reader" class="btn-accessible btn-danger" aria-label="Stop reading text">
+            ⏹️ Stop Reading
+          </button>
+        </div>
+      </section>
+
+      <!-- 5. NEARBY AMENITIES VIEW -->
+      <section id="view-nearby" class="view-panel" aria-labelledby="heading-nearby">
+        <div class="panel-header">
+          <button class="btn-back" data-back="dashboard" aria-label="Back to dashboard">⬅ Back</button>
+          <h2 id="heading-nearby" class="panel-title">Nearby Amenities</h2>
+        </div>
+
+        <!-- Category Filters -->
+        <div class="filter-chips-row" role="radiogroup" aria-label="Filter amenities by category">
+          <button class="filter-chip active" data-cat="all">All</button>
+          <button class="filter-chip" data-cat="pharmacy">Pharmacies</button>
+          <button class="filter-chip" data-cat="hospital">Hospitals</button>
+          <button class="filter-chip" data-cat="transit">Transit</button>
+          <button class="filter-chip" data-cat="bank">ATMs / Bank</button>
+          <button class="filter-chip" data-cat="grocery">Groceries</button>
+        </div>
+
+        <div id="nearby-summary-card" class="card" role="region" aria-live="polite">
+          <span id="nearby-summary-text">Found 5 offline amenities within 500 meters.</span>
+        </div>
+
+        <!-- Places List -->
+        <div class="places-list" id="places-container">
+          <!-- Populated by JavaScript -->
+        </div>
+      </section>
+
+      <!-- 6. SAFETY & SOS VIEW -->
+      <section id="view-safety" class="view-panel" aria-labelledby="heading-safety">
+        <div class="panel-header">
+          <button class="btn-back" data-back="dashboard" aria-label="Back to dashboard">⬅ Back</button>
+          <h2 id="heading-safety" class="panel-title">Safety & Emergency SOS</h2>
+        </div>
+
+        <!-- SOS Countdown Modal / Active Warning -->
+        <div id="sos-countdown-banner" class="sos-banner hidden" role="alert" aria-live="assertive">
+          <div class="sos-banner-header">🚨 EMERGENCY SOS ACTIVATED 🚨</div>
+          <div class="sos-timer-number" id="sos-timer-number">5</div>
+          <div class="sos-timer-text">Alert will be dispatched to trusted contacts.</div>
+          <button id="btn-cancel-sos" class="btn-accessible btn-cancel-sos" aria-label="Cancel Emergency SOS immediately.">
+            ✖️ CANCEL SOS NOW
+          </button>
+        </div>
+
+        <!-- Master SOS Trigger Button -->
+        <div class="sos-trigger-card">
+          <button id="btn-trigger-sos" class="btn-giant-sos" aria-label="Trigger Emergency SOS. Double tap to start 5-second countdown.">
+            <span class="sos-icon">🚨</span>
+            <span class="sos-title">TRIGGER SOS</span>
+            <span class="sos-sub">5-second safe countdown</span>
+          </button>
+        </div>
+
+        <!-- Primary Contact Card -->
+        <div class="card contact-card">
+          <div class="card-label">Primary Trusted Contact</div>
+          <div class="contact-name">Jane Doe (Sister)</div>
+          <div class="contact-phone">+1 (555) 234-5678</div>
+          <button id="btn-call-primary" class="btn-accessible btn-primary" aria-label="Call primary contact Jane Doe">
+            📞 Call Jane Doe
+          </button>
+        </div>
+
+        <!-- Consent-Based Location Sharing Card -->
+        <div class="card sharing-card">
+          <div class="card-label">Consent-Based Location Sharing</div>
+          <p class="sharing-desc" id="sharing-desc-text">
+            Status: <strong>DISABLED</strong>. SIGHTGUIDE will never track or share your location without your explicit consent.
+          </p>
+          <button id="btn-toggle-sharing" class="btn-accessible" aria-label="Toggle consent-based location sharing with caregiver">
+            📡 Enable Location Sharing
+          </button>
+        </div>
+
+        <!-- Caregiver Pairing & Audit Trail Link -->
+        <div class="card caregiver-link-card">
+          <div class="card-label">Caregiver Coordination & Audit Trail</div>
+          <div class="pairing-box">
+            <span>Caregiver Pairing Code:</span>
+            <strong id="pairing-code-display">H7-9K2</strong>
+          </div>
+          <button id="btn-new-code" class="btn-accessible btn-secondary" aria-label="Generate new temporary caregiver pairing code">
+            🔑 Generate New Code
+          </button>
+        </div>
+      </section>
+
+      <!-- 7. SETTINGS VIEW -->
+      <section id="view-settings" class="view-panel" aria-labelledby="heading-settings">
+        <div class="panel-header">
+          <button class="btn-back" data-back="dashboard" aria-label="Back to dashboard">⬅ Back</button>
+          <h2 id="heading-settings" class="panel-title">Accessibility Settings</h2>
+        </div>
+
+        <!-- Speech Rate Setting -->
+        <div class="card setting-card">
+          <div class="setting-header">
+            <label for="slider-speech-rate" class="setting-title">Speech Rate: <span id="rate-value-text">1.0x</span></label>
+          </div>
+          <input type="range" id="slider-speech-rate" min="0.6" max="2.2" step="0.1" value="1.0" class="accessible-slider" aria-label="Speech speed rate slider">
+          <button id="btn-test-speech" class="btn-accessible btn-secondary" aria-label="Test current speech speed and pitch">
+            🗣️ Test Voice Sample
+          </button>
+        </div>
+
+        <!-- Speech Pitch Setting -->
+        <div class="card setting-card">
+          <div class="setting-header">
+            <label for="slider-speech-pitch" class="setting-title">Voice Pitch: <span id="pitch-value-text">1.0</span></label>
+          </div>
+          <input type="range" id="slider-speech-pitch" min="0.7" max="1.5" step="0.1" value="1.0" class="accessible-slider" aria-label="Voice pitch slider">
+        </div>
+
+        <!-- High Contrast Palette -->
+        <div class="card setting-card setting-toggle-card">
+          <div>
+            <div class="setting-title">High Contrast Dark Mode</div>
+            <div class="setting-desc">Safety Yellow on Deep Slate (WCAG AAA)</div>
+          </div>
+          <button id="btn-toggle-dark-mode" class="btn-chip btn-active" aria-label="Toggle high contrast dark mode">ON</button>
+        </div>
+
+        <!-- Tactile Haptic Vibration -->
+        <div class="card setting-card">
+          <div class="setting-title">Tactile Vibration Feedback</div>
+          <div class="setting-desc">Vibrate on turns, obstacles, and SOS countdowns.</div>
+          <button id="btn-test-vibration" class="btn-accessible btn-secondary" aria-label="Test tactile vibration pulse">
+            📳 Test Vibration Pulse
+          </button>
+        </div>
+
+        <!-- Auditory Earcons -->
+        <div class="card setting-card setting-toggle-card">
+          <div>
+            <div class="setting-title">Auditory Chimes (Earcons)</div>
+            <div class="setting-desc">Low-latency acoustic bells for voice and arrival cues.</div>
+          </div>
+          <button id="btn-toggle-chimes" class="btn-chip btn-active" aria-label="Toggle auditory chimes">ON</button>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Guidance Bar -->
+    <footer class="app-footer">
+      <div id="footer-status-text" class="footer-text">
+        SIGHTGUIDE ready. Tap Voice Assistant or select a feature above.
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
