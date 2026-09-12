@@ -802,7 +802,54 @@ BATCH: #AC-99214
   </div>
 
     <!-- TensorFlow.js & COCO-SSD Computer Vision Engines (with smart offline fallback) -->
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js"></script>
+    <!-- Interactive Accessible Voice Assistant Modal for Ravi -->
+  <div id="voice-input-modal" class="voice-modal-overlay hidden" role="dialog" aria-modal="true" aria-label="Ravi Voice Assistant">
+    <div class="voice-modal-box">
+      <div class="voice-modal-header">
+        <div class="voice-modal-pulse-mic" id="voice-modal-mic-icon">🎙️</div>
+        <div>
+          <h2 class="voice-modal-title" id="voice-modal-status">Listening to Ravi...</h2>
+          <p class="voice-modal-sub">Speak any command, or say what you want to record as a voice note</p>
+        </div>
+        <button id="btn-close-voice-modal" class="btn-voice-modal-close" aria-label="Close voice assistant">✖️</button>
+      </div>
+
+      <!-- Live Spoken Transcript Box -->
+      <div class="voice-modal-transcript-card">
+        <span class="transcript-tag">Heard:</span>
+        <div class="voice-modal-live-text" id="voice-modal-transcript" tabindex="0">
+          "Listening... speak now"
+        </div>
+      </div>
+
+      <!-- Manual Input Fallback & Action -->
+      <form id="voice-modal-form" class="voice-modal-form-row">
+        <input type="text" id="voice-modal-input" class="voice-modal-input" placeholder="Or type command / voice note here..." autocomplete="off" aria-label="Type command or voice note for Ravi" />
+        <button type="submit" id="btn-voice-modal-submit" class="btn-acc-pill btn-primary-pill">
+          ▶ Submit
+        </button>
+      </form>
+
+      <!-- Instant Voice Command Chips for Ravi -->
+      <div class="voice-modal-chips-section">
+        <span class="chips-label">Quick Voice Actions for Ravi:</span>
+        <div class="voice-chips-grid">
+          <button type="button" class="btn-voice-chip" data-cmd="turn camera">📷 Turn Camera</button>
+          <button type="button" class="btn-voice-chip" data-cmd="turn on navigate route">🧭 Turn on Navigate Route</button>
+          <button type="button" class="btn-voice-chip" data-cmd="start recording">🎙️ Start Voice Recording</button>
+          <button type="button" class="btn-voice-chip" data-cmd="what is this">🔍 What is this / Identify</button>
+          <button type="button" class="btn-voice-chip" data-cmd="read document">📖 Read Document</button>
+          <button type="button" class="btn-voice-chip" data-cmd="emergency">🚨 Emergency SOS</button>
+          <button type="button" class="btn-voice-chip" data-cmd="nearby places">🏥 Nearby Places</button>
+          <button type="button" class="btn-voice-chip" data-cmd="call lakshmi">📞 Call Lakshmi</button>
+          <button type="button" class="btn-voice-chip" data-cmd="where am i">📍 Where Am I?</button>
+          <button type="button" class="btn-voice-chip" data-cmd="send to family">📤 Send to Family</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js"></script>
   <script src="app.js"></script>
 </body>

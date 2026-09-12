@@ -363,7 +363,7 @@ function speak(text, onEndCallback = null) {
 }
 
 /* ==========================================================================
-   3. VOICE RECOGNITION & NATURAL LANGUAGE COMMAND PROCESSOR
+   3. VOICE RECOGNITION & NATURAL LANGUAGE COMMAND PROCESSOR FOR RAVI
    ========================================================================== */
 let speechRecognizer = null;
 
@@ -372,23 +372,51 @@ function setupSpeechRecognition() {
   if (SpeechRecognition) {
     speechRecognizer = new SpeechRecognition();
     speechRecognizer.continuous = false;
-    speechRecognizer.interimResults = false;
+    speechRecognizer.interimResults = true; // Show live interim words as Ravi speaks!
     speechRecognizer.lang = 'en-US';
 
     speechRecognizer.onstart = () => {
       state.isVoiceListening = true;
       updateVoiceHeroUI();
       earcons.listeningStart();
+      const modalStatus = document.getElementById('voice-modal-status');
+      if (modalStatus) modalStatus.textContent = "Listening to Ravi... Speak now";
     };
 
     speechRecognizer.onresult = (event) => {
-      const transcript = event.results[0][0].transcript.trim();
-      console.log("Voice transcript received:", transcript);
-      handleVoiceCommand(transcript);
+      let interimTranscript = '';
+      let finalTranscript = '';
+
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+          finalTranscript += event.results[i][0].transcript;
+        } else {
+          interimTranscript += event.results[i][0].transcript;
+        }
+      }
+
+      const liveText = document.getElementById('voice-modal-transcript');
+      const inputEl = document.getElementById('voice-modal-input');
+      const displayText = finalTranscript || interimTranscript;
+
+      if (liveText && displayText) liveText.textContent = `"${displayText}"`;
+      if (inputEl && displayText) inputEl.value = displayText;
+
+      if (finalTranscript.trim()) {
+        console.log("Final voice transcript received:", finalTranscript.trim());
+        setTimeout(() => {
+          closeVoiceAssistantModal();
+          handleVoiceCommand(finalTranscript.trim());
+        }, 400);
+      }
     };
 
     speechRecognizer.onerror = (event) => {
       console.warn("Speech recognition error:", event.error);
+      const modalStatus = document.getElementById('voice-modal-status');
+      const liveText = document.getElementById('voice-modal-transcript');
+      if (modalStatus) modalStatus.textContent = "Microphone Ready — Say or choose command";
+      if (liveText) liveText.textContent = "Could not hear audio clearly. Tap a quick command below or type your note.";
       state.isVoiceListening = false;
       updateVoiceHeroUI();
     };
@@ -400,49 +428,79 @@ function setupSpeechRecognition() {
   }
 }
 
-function toggleVoiceListening() {
+function openVoiceAssistantModal() {
+  const modal = document.getElementById('voice-input-modal');
+  const transcriptEl = document.getElementById('voice-modal-transcript');
+  const inputEl = document.getElementById('voice-modal-input');
+  const statusEl = document.getElementById('voice-modal-status');
+
+  if (modal) modal.classList.remove('hidden');
+  if (transcriptEl) transcriptEl.textContent = "Listening... Speak your command or voice note now";
+  if (inputEl) {
+    inputEl.value = '';
+    inputEl.focus();
+  }
+  if (statusEl) statusEl.textContent = "Listening to Ravi...";
+
+  earcons.listeningStart();
   getAudioContext();
-  if (state.isVoiceListening) {
-    if (speechRecognizer) speechRecognizer.stop();
-    state.isVoiceListening = false;
-    updateVoiceHeroUI();
-  } else {
-    if (speechRecognizer) {
-      try {
-        speechRecognizer.start();
-      } catch (e) {
-        promptSimulatedVoice();
-      }
-    } else {
-      promptSimulatedVoice();
+
+  // Try starting speech recognizer
+  if (speechRecognizer) {
+    try {
+      speechRecognizer.start();
+    } catch (e) {
+      console.log("Speech recognizer already running or starting");
     }
   }
 }
 
-function promptSimulatedVoice() {
-  state.isVoiceListening = true;
+function closeVoiceAssistantModal() {
+  const modal = document.getElementById('voice-input-modal');
+  if (modal) modal.classList.add('hidden');
+  if (speechRecognizer && state.isVoiceListening) {
+    try { speechRecognizer.stop(); } catch(e){}
+  }
+  state.isVoiceListening = false;
   updateVoiceHeroUI();
-  earcons.listeningStart();
+}
 
-  const sampleCommands = [
-    "Call Lakshmi",
-    "Call my mother",
-    "Call Suresh",
-    "Where am I?",
-    "Navigate to hospital",
-    "Describe scene",
-    "Start recording",
-    "Emergency SOS"
-  ];
-  const chosen = prompt("Voice Assistant Command Simulation:\nSpeak or type a command:\n- Call Lakshmi (or 'Call my mother')\n- Call Suresh (or 'Call father')\n- Call Kavya / Call Prasad\n- Where am I?\n- Navigate to hospital\n- Describe scene\n- Start recording\n- Emergency SOS", sampleCommands[0]);
-  
-  setTimeout(() => {
-    state.isVoiceListening = false;
-    updateVoiceHeroUI();
-    if (chosen && chosen.trim()) {
-      handleVoiceCommand(chosen.trim());
-    }
-  }, 350);
+function toggleVoiceListening() {
+  const modal = document.getElementById('voice-input-modal');
+  if (modal && !modal.classList.contains('hidden')) {
+    closeVoiceAssistantModal();
+  } else {
+    openVoiceAssistantModal();
+  }
+}
+
+// Save Voice Note from Spoken Audio / Text for Ravi
+function saveVoiceNoteFromSpeech(noteContent, originalSpoken) {
+  const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const durationSec = 6;
+  const durationStr = "00:06";
+  const audioUrl = createAudibleToneWavUrl(480, 4);
+
+  const cleanTitle = noteContent.length > 25 ? noteContent.substring(0, 25) + '...' : noteContent;
+
+  const newRec = {
+    id: `rec-${Date.now()}`,
+    title: `Voice Note: ${cleanTitle}`,
+    time: `Today at ${now}`,
+    duration: durationStr,
+    durationSec: durationSec,
+    audioUrl: audioUrl,
+    blob: null,
+    spokenContent: noteContent
+  };
+
+  state.recordings.unshift(newRec);
+  renderRecordingsList();
+
+  // Highlight Record tile for Ravi
+  activateFeatureByVoice('panel-memos', null);
+
+  speak(`Voice note taken and saved for Ravi: "${noteContent}". Duration 6 seconds. Say 'send to family' to send this voice note to Lakshmi, Suresh, Kavya, and Prasad, or say 'play recording' to listen.`);
 }
 
 
@@ -568,16 +626,13 @@ function handleVoiceCommand(rawCmd) {
     return;
   }
 
-  // 5. Voice Recording Controls: "start recording", "record voice note", "stop recording", "send to family", "play recording"
+  // 5. Voice Recording Specific Controls
   if (
-    cmd.includes("start recording") ||
-    cmd.includes("record voice note") ||
-    cmd.includes("record audio") ||
-    cmd.includes("record voice") ||
-    cmd.includes("record memo") ||
-    cmd.includes("voice note") ||
-    cmd.includes("voice recording") ||
-    cmd === "record"
+    cmd === "start recording" ||
+    cmd === "record" ||
+    cmd === "start audio recording" ||
+    cmd === "record audio" ||
+    cmd === "start voice recording"
   ) {
     activateFeatureByVoice('panel-memos', null);
     startAudioRecording();
@@ -606,7 +661,7 @@ function handleVoiceCommand(rawCmd) {
     if (state.recordings.length > 0) {
       sendRecordingToFamily(state.recordings[0].id);
     } else {
-      speak("You have no saved recordings to send, Ravi. Say 'start recording' to create a voice note first.");
+      speak("You have no saved recordings to send, Ravi. Say 'start recording' or speak your note to create one.");
     }
     return;
   }
@@ -622,7 +677,7 @@ function handleVoiceCommand(rawCmd) {
     if (state.recordings.length > 0) {
       playRecordingAudio(state.recordings[0].id);
     } else {
-      speak("You have no saved voice notes yet, Ravi. Say 'start recording' to capture your first audio message.");
+      speak("You have no saved voice notes yet, Ravi. Say 'start recording' or speak a note to save one.");
     }
     return;
   }
@@ -735,8 +790,32 @@ function handleVoiceCommand(rawCmd) {
     return;
   }
 
-  // Fallback
-  speak(`I heard: "${rawCmd}", Ravi. Say "turn camera", "turn on navigate route", "start recording", "read", "nearby", or "call Lakshmi".`);
+  // 13. EXPLICIT VOICE NOTE OR GENERAL SPEECH -> TAKE AS VOICE NOTE FOR RAVI!
+  // Handles: "take a voice note...", "record note...", "remember...", or any general spoken words
+  let noteText = rawCmd;
+  const prefixes = [
+    /^take a voice note\s*:?/i,
+    /^take a note\s*:?/i,
+    /^take note\s*:?/i,
+    /^record a voice note\s*:?/i,
+    /^record voice note\s*:?/i,
+    /^record note\s*:?/i,
+    /^save voice note\s*:?/i,
+    /^voice note\s*:?/i,
+    /^note\s*:?/i
+  ];
+
+  for (const prefix of prefixes) {
+    if (prefix.test(noteText)) {
+      noteText = noteText.replace(prefix, '').trim();
+      break;
+    }
+  }
+
+  if (!noteText) noteText = rawCmd;
+
+  // Save as Voice Note for Ravi!
+  saveVoiceNoteFromSpeech(noteText, rawCmd);
 }
 
 
@@ -2298,7 +2377,7 @@ function switchUserSubpanel(panelId) {
   });
 
   if (panelId === 'panel-camera') {
-    startContinuousObjectIdentification();
+    startVisionRenderLoop();
   }
 }
 
@@ -2572,12 +2651,45 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }, 2500);
 
-  // Accessibility: Spacebar triggers voice assistant for Ravi hands-free
+  // Accessibility: Spacebar triggers voice recording or voice assistant for Ravi
   window.addEventListener('keydown', (e) => {
     if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
       e.preventDefault();
-      toggleVoiceListening();
+      // If Ravi is in the Record panel (panel-memos), Spacebar toggles audio recording directly!
+      if (state.activeUserPanel === 'panel-memos') {
+        if (state.isRecording) {
+          stopAudioRecording();
+        } else {
+          startAudioRecording();
+        }
+      } else {
+        // In other panels, Spacebar opens voice assistant to speak command or capture voice note
+        toggleVoiceListening();
+      }
     }
+  });
+
+  // Wire Voice Modal Form Submission
+  document.getElementById('voice-modal-form')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const input = document.getElementById('voice-modal-input');
+    if (input && input.value.trim()) {
+      const text = input.value.trim();
+      closeVoiceAssistantModal();
+      handleVoiceCommand(text);
+    }
+  });
+
+  // Wire Voice Modal Close Button
+  document.getElementById('btn-close-voice-modal')?.addEventListener('click', closeVoiceAssistantModal);
+
+  // Wire Quick Voice Command Chips
+  document.querySelectorAll('.btn-voice-chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cmd = btn.getAttribute('data-cmd');
+      closeVoiceAssistantModal();
+      if (cmd) handleVoiceCommand(cmd);
+    });
   });
 
   // Replay Camera Voice Note
