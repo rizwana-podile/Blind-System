@@ -1,0 +1,19 @@
+{
+  "name": "sightguide-web",
+  "version": "1.0.0",
+  "description": "SIGHTGUIDE Assistive Smartphone Platform - Interactive Web Interface",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "accessibility",
+    "sightguide",
+    "assistive",
+    "wcag",
+    "low-vision"
+  ],
+  "author": "SIGHTGUIDE Team",
+  "license": "Apache-2.0"
+}
