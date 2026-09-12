@@ -38,42 +38,31 @@
       <rect x="0" y="830" width="1440" height="70" fill="url(#tactileDots)"/>
 
       <!-- LEFT SCENE: Blind Pedestrian with Guide Dog Companion -->
-      <!-- Person 1: Navigator with Guide Harness -->
       <circle cx="280" cy="510" r="14" fill="#FFE500" opacity="0.3"/>
       <path d="M280,525 L280,620 M262,550 L298,550 M280,620 L260,705 M280,620 L296,700" stroke="#FFE500" stroke-width="4.5" stroke-linecap="round" opacity="0.3"/>
-      <!-- Harness to Guide Dog -->
       <path d="M295,570 L380,655" stroke="#FFE500" stroke-width="2" opacity="0.5"/>
-      <!-- Companion Guide Dog in Harness -->
       <path d="M370,670 Q395,640 420,655 Q440,665 448,700 L442,715 L422,715 L418,690 L385,690 L376,715 Z" fill="#FFE500" opacity="0.3"/>
-      <!-- Dog Tail & Collar Tag -->
-      <path d="M370,670 Q355,650 350,665" stroke="#FFE500" stroke-width="2.5" fill="none" opacity="0.3"/>
-      <circle cx="410" cy="660" r="3" fill="#FFE500" opacity="0.6"/>
-      <!-- Acoustic Soundwave Rings (Left) -->
       <circle cx="280" cy="510" r="30" fill="none" stroke="#FFE500" stroke-width="1.5" opacity="0.25"/>
       <circle cx="280" cy="510" r="55" fill="none" stroke="#FFE500" stroke-width="1.2" opacity="0.15"/>
-      <circle cx="280" cy="510" r="80" fill="none" stroke="#FFE500" stroke-width="1.0" opacity="0.08"/>
 
       <!-- RIGHT SCENE: Independent Traveler using White Cane & Assistive Audio -->
       <circle cx="1180" cy="520" r="14" fill="#FFE500" opacity="0.3"/>
       <path d="M1180,535 L1180,630 M1165,560 L1195,560 M1180,630 L1160,715 M1180,630 L1198,710" stroke="#FFE500" stroke-width="4.5" stroke-linecap="round" opacity="0.3"/>
-      <!-- Smartphone held in hand with Bluetooth Audio Beacons -->
       <rect x="1195" y="555" width="6" height="12" rx="2" fill="#FFFFFF" opacity="0.6"/>
       <circle cx="1198" cy="561" r="16" fill="none" stroke="#388BFD" stroke-width="1.5" opacity="0.4"/>
-      <circle cx="1198" cy="561" r="30" fill="none" stroke="#388BFD" stroke-width="1.2" opacity="0.25"/>
-      <!-- Long White Cane with High-Vis Tip sweeping tactile pavers -->
       <path d="M1172,580 L1085,720" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" opacity="0.65"/>
-      <circle cx="1085" cy="720" r="5" fill="#FFE500" opacity="0.9"/> <!-- Roller ball tip -->
-      <path d="M1065,720 Q1085,725 1105,720" stroke="#FFE500" stroke-width="2" fill="none" opacity="0.5"/> <!-- Sweep arc -->
+      <circle cx="1085" cy="720" r="5" fill="#FFE500" opacity="0.9"/>
+      <path d="M1065,720 Q1085,725 1105,720" stroke="#FFE500" stroke-width="2" fill="none" opacity="0.5"/>
     </svg>
   </div>
 
-  <!-- Audio Initializer Barrier Banner (Guarantees speech playback across all browsers) -->
+  <!-- Audio Initializer Barrier Banner -->
   <div id="audio-start-banner" class="audio-start-banner">
     <div class="audio-banner-content">
       <div class="audio-icon-pulse">🔊</div>
       <div class="audio-text-group">
         <strong>Voice Engine Ready</strong>
-        <span>Click anywhere to activate clear spoken voice notes & audio assistant.</span>
+        <span>Click anywhere to activate clear spoken voice guidance & audio assistant.</span>
       </div>
       <button id="btn-activate-audio" class="btn-activate-audio" aria-label="Activate voice assistant and sound engine">
         Enable Audio & Voice
@@ -87,7 +76,7 @@
   <!-- Main Root Layout Wrapper -->
   <div class="site-wrapper">
 
-    <!-- Top Master Switcher: User Dashboard vs Family Dashboard vs Dual View -->
+    <!-- Top Master Switcher -->
     <header class="master-top-bar">
       <div class="master-brand">
         <span class="app-logo">🦯👁️</span>
@@ -97,12 +86,12 @@
         </div>
       </div>
 
-      <!-- Master Mode Switcher (User Mode vs Family Mode vs Dual View) -->
+      <!-- Master Mode Switcher -->
       <nav class="dashboard-switcher" role="tablist" aria-label="Dashboard Selection">
         <button id="tab-user" class="switch-tab active" role="tab" aria-selected="true" aria-controls="user-dashboard-container">
           <span class="tab-icon">🦯</span>
           <span class="tab-label">User Dashboard</span>
-          <span class="tab-tag">Blind Mode</span>
+          <span class="tab-tag">Ravi's Phone</span>
         </button>
         <button id="tab-family" class="switch-tab" role="tab" aria-selected="false" aria-controls="family-dashboard-container">
           <span class="tab-icon">👨‍👩‍👧</span>
@@ -127,19 +116,21 @@
       </div>
     </header>
 
-    <!-- Dashboards Container (Supports Single View or Side-by-Side Dual View) -->
+    <!-- Dashboards Container -->
     <div class="dashboards-grid" id="dashboards-grid">
 
       <!-- ====================================================================
-           1. USER DASHBOARD (Blind & Low-Vision Assistant)
+           1. USER DASHBOARD (Ravi's Blind & Low-Vision Assistant)
            ==================================================================== -->
       <section id="user-dashboard-container" class="dashboard-column user-column" role="tabpanel" aria-labelledby="tab-user">
+        
+        <!-- User Column Header -->
         <div class="column-header">
           <div class="column-title-group">
             <span class="col-icon">🦯</span>
             <div>
-              <h2 class="col-title">User Assistant</h2>
-              <span class="col-sub">Voice-first navigation, camera, reader & safety</span>
+              <h2 class="col-title">User: Ravi</h2>
+              <span class="col-sub">Voice navigation, live camera, audio recording & safety</span>
             </div>
           </div>
           <!-- Vitals Chipset -->
@@ -152,17 +143,17 @@
 
         <!-- Master Voice Trigger Button -->
         <div class="voice-hero-box">
-          <button id="btn-user-voice" class="btn-voice-hero" aria-label="Voice Assistant. Tap to activate microphone and speak your command. Press Spacebar anytime.">
+          <button id="btn-user-voice" class="btn-voice-hero" aria-label="Voice Assistant. Tap to activate microphone or press Spacebar. Say 'Call Lakshmi', 'Call Suresh', 'Where am I', 'Emergency'.">
             <div class="mic-wave-ring"></div>
             <span class="mic-glyph">🎙️</span>
             <div class="mic-text-block">
               <span class="mic-main-text" id="voice-button-label">Tap to Speak to SIGHTGUIDE</span>
-              <span class="mic-sub-text" id="voice-button-sub">"Where am I?", "Navigate to pharmacy", "Read this"</span>
+              <span class="mic-sub-text" id="voice-button-sub">"Call Lakshmi", "Where am I?", "Navigate to hospital", "Emergency"</span>
             </div>
           </button>
           <div class="voice-transcript-bar" id="voice-transcript-bar" aria-live="polite">
             <span class="transcript-prefix">Last Spoken:</span>
-            <span class="transcript-content" id="voice-transcript-content">"Welcome to SIGHTGUIDE. Voice assistant is ready."</span>
+            <span class="transcript-content" id="voice-transcript-content">"Welcome Ravi. Voice assistant is ready."</span>
           </div>
         </div>
 
@@ -172,25 +163,30 @@
             <span class="feat-icon">🧭</span>
             <span class="feat-name">Navigate</span>
           </button>
-          <button class="feat-tile" data-panel="panel-camera" aria-label="Camera. Obstacle and object detection.">
+          <button class="feat-tile" data-panel="panel-camera" aria-label="Camera. Continuous live object identification.">
             <span class="feat-icon">📷</span>
             <span class="feat-name">Camera</span>
           </button>
-          <button class="feat-tile" data-panel="panel-reader" aria-label="Read. OCR text scanner for documents, labels, and signs.">
+          <button class="feat-tile" data-panel="panel-reader" aria-label="Read. OCR text scanner for documents and medicine labels.">
             <span class="feat-icon">📖</span>
             <span class="feat-name">Read</span>
           </button>
-          <button class="feat-tile" data-panel="panel-nearby" aria-label="Nearby. Search pharmacies, transit, hospitals, and ATMs.">
+          <button class="feat-tile" data-panel="panel-nearby" aria-label="Nearby. Search amenities and get turn-by-turn routes.">
             <span class="feat-icon">🏥</span>
             <span class="feat-name">Nearby</span>
           </button>
-          <button class="feat-tile feat-tile-sos" data-panel="panel-safety" aria-label="Safety and Emergency SOS.">
+          <button class="feat-tile feat-tile-sos" data-panel="panel-safety" aria-label="Safety and Emergency SOS to all family.">
             <span class="feat-icon">🚨</span>
             <span class="feat-name">Safety</span>
           </button>
-          <button class="feat-tile" data-panel="panel-memos" aria-label="Voice Memos and Audio Notes.">
-            <span class="feat-icon">🗣️</span>
-            <span class="feat-name">Memos</span>
+          <button class="feat-tile" data-panel="panel-memos" aria-label="Record. Capture real audio and send to family.">
+            <span class="feat-icon">🎙️</span>
+            <span class="feat-name">Record</span>
+          </button>
+          <button class="feat-tile feat-tile-notif" data-panel="panel-notifications" aria-label="Family Messages and incoming updates.">
+            <span class="feat-icon">🔔</span>
+            <span class="feat-name">Family Msg</span>
+            <span class="tile-badge-num" id="tile-notif-count">2</span>
           </button>
           <button class="feat-tile" data-panel="panel-settings" aria-label="Accessibility Settings.">
             <span class="feat-icon">⚙️</span>
@@ -244,18 +240,31 @@
             </div>
           </div>
 
-          <!-- B. CAMERA ASSISTANCE PANEL -->
+          <!-- B. CAMERA ASSISTANCE PANEL (Continuous Live Object Identification) -->
           <div id="panel-camera" class="user-subpanel">
             <div class="viewfinder-container">
               <video id="camera-video" playsinline muted autoplay></video>
               <canvas id="camera-canvas"></canvas>
+              
+              <!-- Prominent Live Object Identification Overlay HUD -->
+              <div class="camera-detection-hud" id="camera-detection-hud">
+                <div class="hud-status-badge" id="hud-status">Live Analyzing...</div>
+                <div class="hud-content">
+                  <div class="hud-object-title">
+                    <span class="hud-obj-icon" id="hud-object-icon">🪑</span>
+                    <span class="hud-obj-name" id="hud-object-name">Chair</span>
+                  </div>
+                  <div class="hud-confidence" id="hud-confidence">Confidence: 94%</div>
+                </div>
+              </div>
+
               <div class="viewfinder-badge" id="camera-badge">Vision AI: Active</div>
             </div>
 
             <div class="subpanel-card">
-              <div class="card-badge">Surroundings & Obstacle Analysis</div>
+              <div class="card-badge">Live Surroundings & Obstacle Recognition</div>
               <div class="scene-text" id="scene-description-text">
-                A person is standing 2 meters ahead on your left. Water bottle located 1.2 meters ahead at 1 o'clock. Center path is clear.
+                A chair is detected 1.5 meters directly ahead. Water bottle located 1.2 meters at 1 o'clock. Walking path is clear.
               </div>
             </div>
 
@@ -296,7 +305,6 @@ BATCH: #AC-99214
               </div>
             </div>
 
-            <!-- Document Sample Switcher -->
             <div class="sample-pills-row">
               <span class="row-label">Sample:</span>
               <button class="sample-pill active" data-sample="medicine">Medicine</button>
@@ -325,12 +333,53 @@ BATCH: #AC-99214
             </div>
           </div>
 
-          <!-- D. NEARBY AMENITIES PANEL -->
+          <!-- D. NEARBY AMENITIES & TURN-BY-TURN WALKING ROUTE PANEL -->
           <div id="panel-nearby" class="user-subpanel">
+            
+            <!-- Walking Route & Turn-by-Turn Guidance Card (Revealed when place is selected) -->
+            <div id="nearby-route-card" class="nearby-route-card hidden">
+              <div class="route-header">
+                <div>
+                  <span class="card-badge">Walking Navigation Route</span>
+                  <div class="route-destination-name" id="route-dest-name">🏥 City General Hospital</div>
+                </div>
+                <button id="btn-close-route" class="btn-acc-pill btn-subtle-pill" aria-label="Close route guidance">✖️ Close Route</button>
+              </div>
+
+              <div class="route-stats-row">
+                <div class="route-stat-box">
+                  <span class="r-label">Walking Distance</span>
+                  <strong class="r-val" id="route-distance-text">2.4 km</strong>
+                </div>
+                <div class="route-stat-box">
+                  <span class="r-label">Estimated Time</span>
+                  <strong class="r-val" id="route-time-text">31 min</strong>
+                </div>
+                <div class="route-stat-box">
+                  <span class="r-label">Turn Guidance</span>
+                  <strong class="r-val" id="route-steps-count">6 steps</strong>
+                </div>
+              </div>
+
+              <!-- Voice Read-Aloud Action -->
+              <div class="route-actions-row">
+                <button id="btn-voice-guidance" class="btn-giant-action btn-action-primary" aria-label="Start voice-guided walking directions">
+                  <span class="action-icon">🔊</span>
+                  <span id="voice-guidance-btn-text">Start Voice Directions</span>
+                </button>
+              </div>
+
+              <!-- Step-by-Step Directions List -->
+              <div class="route-steps-list" id="route-steps-list">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+            <!-- Nearby Amenity Category Filter Chips -->
             <div class="amenity-chips-bar">
               <button class="am-chip active" data-cat="all">All</button>
-              <button class="am-chip" data-cat="pharmacy">Pharmacies</button>
               <button class="am-chip" data-cat="hospital">Hospitals</button>
+              <button class="am-chip" data-cat="pharmacy">Pharmacies</button>
               <button class="am-chip" data-cat="transit">Transit</button>
               <button class="am-chip" data-cat="bank">ATMs / Banks</button>
               <button class="am-chip" data-cat="grocery">Groceries</button>
@@ -341,14 +390,15 @@ BATCH: #AC-99214
             </div>
           </div>
 
-          <!-- E. SAFETY & EMERGENCY SOS PANEL -->
+          <!-- E. SAFETY & EMERGENCY SOS (Broadcasts to ALL Family Members) -->
           <div id="panel-safety" class="user-subpanel">
+            
             <!-- SOS Countdown Alert Card -->
             <div id="user-sos-countdown-card" class="sos-countdown-card hidden">
               <div class="sos-alert-title">🚨 EMERGENCY SOS ACTIVATED 🚨</div>
               <div class="sos-countdown-digit" id="sos-countdown-digit">5</div>
               <div class="sos-countdown-message">
-                Dispatching emergency alarm to Family Dashboard & Jane Doe.
+                Broadcasting emergency siren to ALL family members: Lakshmi, Suresh, Kavya, and Prasad.
               </div>
               <button id="btn-user-cancel-sos" class="btn-cancel-giant" aria-label="Cancel Emergency SOS immediately">
                 ✖️ CANCEL SOS NOW
@@ -359,18 +409,50 @@ BATCH: #AC-99214
             <button id="btn-user-trigger-sos" class="btn-user-master-sos">
               <span class="sos-btn-icon">🚨</span>
               <span class="sos-btn-title">TRIGGER EMERGENCY SOS</span>
-              <span class="sos-btn-sub">5-second safe countdown • Alerts Family Dashboard</span>
+              <span class="sos-btn-sub">Alerts ALL 4 Registered Family Members Immediately</span>
             </button>
 
-            <!-- Quick Contacts Card -->
+            <!-- Registered Telugu Family Quick Contacts -->
             <div class="subpanel-card">
-              <div class="card-badge">Emergency Contact</div>
-              <div class="contact-info-row">
-                <div>
-                  <div class="contact-name-title">Jane Doe (Sister / Caregiver)</div>
-                  <div class="contact-number">+1 (555) 234-5678</div>
+              <div class="card-badge">Registered Family Contacts (Voice or One-Tap Call)</div>
+              
+              <div class="family-quick-contacts-list">
+                <!-- 1. Lakshmi (Mother) -->
+                <div class="family-contact-row">
+                  <div class="contact-avatar">👩</div>
+                  <div class="contact-info">
+                    <div class="contact-name">Lakshmi (Mother)</div>
+                    <div class="contact-phone">+91 98480 22338</div>
+                  </div>
+                  <button class="btn-acc-pill btn-primary-pill btn-quick-call" data-name="Lakshmi" data-role="Mother" aria-label="Call Lakshmi">📞 Call Mother</button>
                 </div>
-                <button id="btn-user-call-primary" class="btn-acc-pill btn-primary-pill">📞 Call Jane</button>
+                <!-- 2. Suresh (Father) -->
+                <div class="family-contact-row">
+                  <div class="contact-avatar">👨</div>
+                  <div class="contact-info">
+                    <div class="contact-name">Suresh (Father)</div>
+                    <div class="contact-phone">+91 98480 22339</div>
+                  </div>
+                  <button class="btn-acc-pill btn-primary-pill btn-quick-call" data-name="Suresh" data-role="Father" aria-label="Call Suresh">📞 Call Father</button>
+                </div>
+                <!-- 3. Kavya (Sister) -->
+                <div class="family-contact-row">
+                  <div class="contact-avatar">👩</div>
+                  <div class="contact-info">
+                    <div class="contact-name">Kavya (Sister)</div>
+                    <div class="contact-phone">+91 98480 22340</div>
+                  </div>
+                  <button class="btn-acc-pill btn-primary-pill btn-quick-call" data-name="Kavya" data-role="Sister" aria-label="Call Kavya">📞 Call Sister</button>
+                </div>
+                <!-- 4. Prasad (Brother) -->
+                <div class="family-contact-row">
+                  <div class="contact-avatar">👨</div>
+                  <div class="contact-info">
+                    <div class="contact-name">Prasad (Brother)</div>
+                    <div class="contact-phone">+91 98480 22341</div>
+                  </div>
+                  <button class="btn-acc-pill btn-primary-pill btn-quick-call" data-name="Prasad" data-role="Brother" aria-label="Call Prasad">📞 Call Brother</button>
+                </div>
               </div>
             </div>
 
@@ -378,7 +460,7 @@ BATCH: #AC-99214
             <div class="subpanel-card">
               <div class="card-badge">Caregiver Location Sharing</div>
               <p class="card-p" id="user-sharing-status-p">
-                Status: <strong>ACTIVELY SHARING</strong> with Family Dashboard. Your location is securely transmitted.
+                Status: <strong>ACTIVELY SHARING</strong> with all family members.
               </p>
               <button id="btn-user-toggle-sharing" class="btn-acc-pill btn-danger-pill">
                 🛑 Stop Sharing Location
@@ -386,33 +468,52 @@ BATCH: #AC-99214
             </div>
           </div>
 
-          <!-- F. VOICE MEMOS & AUDIO NOTES PANEL -->
+          <!-- F. RECORD & AUDIO NOTES (Real MediaRecorder Audio Capture) -->
           <div id="panel-memos" class="user-subpanel">
-            <div class="subpanel-card">
-              <div class="card-badge">Voice Memos & Audio Notes</div>
-              <p class="card-p">Record quick voice reminders and memos for yourself.</p>
+            <div class="subpanel-card record-hero-card">
+              <div class="card-badge">Voice Audio Recorder (Record & Send to Family)</div>
+              <p class="card-p">Record actual audio through your microphone and send it to your family members.</p>
+              
+              <!-- Active Recording Status Box -->
+              <div id="recording-status-box" class="recording-status-box hidden">
+                <div class="rec-dot-pulse"></div>
+                <span class="rec-label">RECORDING LIVE AUDIO...</span>
+                <span class="rec-timer" id="rec-duration-timer">00:00</span>
+                <div class="rec-waveform-bars">
+                  <span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+              </div>
+
+              <!-- Main Record Action Button -->
               <div class="memo-record-controls">
-                <button id="btn-record-memo" class="btn-giant-action btn-action-primary">
-                  <span class="action-icon">🎙️</span>
-                  <span id="record-memo-label">Record Voice Memo</span>
+                <button id="btn-record-memo" class="btn-giant-action btn-action-primary" aria-label="Start recording audio message">
+                  <span class="action-icon" id="rec-btn-icon">🎙️</span>
+                  <span id="record-memo-label">Start Recording Audio</span>
                 </button>
               </div>
             </div>
 
+            <!-- My Recordings List -->
+            <div class="card-badge" style="margin-top: 10px;">My Recorded Audio Notes</div>
             <div class="memos-list" id="memos-list-container">
-              <!-- Default sample memo -->
-              <div class="memo-item">
-                <span class="memo-icon">🎵</span>
-                <div class="memo-info">
-                  <span class="memo-title">Doctor Appointment Note</span>
-                  <span class="memo-time">Recorded yesterday at 4:15 PM</span>
-                </div>
-                <button class="btn-acc-pill btn-play-memo" data-text="Reminder: Dr. Miller appointment on Thursday at 2 PM. Take medical prescription card.">▶ Play</button>
+              <!-- Dynamically populated with real audio items -->
+            </div>
+          </div>
+
+          <!-- G. USER FAMILY NOTIFICATIONS PANEL (Incoming Calls & Family Messages) -->
+          <div id="panel-notifications" class="user-subpanel">
+            <div class="subpanel-card">
+              <div class="card-header-flex">
+                <div class="card-badge">Family Communication & Notification Center</div>
+                <button id="btn-clear-user-notifs" class="btn-acc-pill btn-subtle-pill">Clear All</button>
+              </div>
+              <div class="user-notifs-list" id="user-notifs-list">
+                <!-- Dynamically populated with family messages, calls, emergency statuses -->
               </div>
             </div>
           </div>
 
-          <!-- G. SETTINGS PANEL -->
+          <!-- H. ACCESSIBILITY SETTINGS PANEL -->
           <div id="panel-settings" class="user-subpanel">
             <div class="subpanel-card">
               <div class="setting-row">
@@ -447,32 +548,41 @@ BATCH: #AC-99214
            2. FAMILY / CAREGIVER DASHBOARD (Real-Time Safety & Monitoring)
            ==================================================================== -->
       <section id="family-dashboard-container" class="dashboard-column family-column" role="tabpanel" aria-labelledby="tab-family">
+        
+        <!-- Family Header with Profile Switcher -->
         <div class="column-header">
           <div class="column-title-group">
             <span class="col-icon">👨‍👩‍👧</span>
             <div>
               <h2 class="col-title">Family Safety Dashboard</h2>
-              <span class="col-sub">Caregiver monitoring, real-time alerts & live check-ins</span>
+              <span class="col-sub">Monitoring User: <strong>Ravi</strong> • 4 Registered Caregivers</span>
             </div>
           </div>
-          <!-- Family Caregiver Identity -->
-          <div class="caregiver-badge">
-            <span class="cg-avatar">JD</span>
-            <span class="cg-name">Jane Doe (Caregiver)</span>
+
+          <!-- Active Caregiver Selector -->
+          <div class="caregiver-profile-selector-wrap">
+            <label for="select-caregiver-user" class="cg-select-label">Active Caregiver:</label>
+            <select id="select-caregiver-user" class="cg-dropdown">
+              <option value="fam-lakshmi">👩 Lakshmi (Mother)</option>
+              <option value="fam-suresh">👨 Suresh (Father)</option>
+              <option value="fam-kavya">👩 Kavya (Sister)</option>
+              <option value="fam-prasad">👨 Prasad (Brother)</option>
+            </select>
           </div>
         </div>
 
-        <!-- Live Emergency SOS Banner (Flashes when User triggers SOS) -->
+        <!-- Live Emergency SOS Banner (Broadcasts to ALL Family Members) -->
         <div id="family-sos-alert-banner" class="family-sos-banner hidden" role="alert">
           <div class="sos-alarm-icon">🚨</div>
           <div class="sos-alert-info">
             <div class="sos-alert-headline">CRITICAL EMERGENCY SOS ALERT!</div>
-            <div class="sos-alert-sub" id="family-sos-time-sub">User triggered SOS at 1:15:30 PM</div>
+            <div class="sos-alert-sub" id="family-sos-time-sub">Ravi triggered SOS! Delivered to ALL 4 Family Members.</div>
             <div class="sos-alert-coords" id="family-sos-coords">Location: 37.7749° N, 122.4194° W (Near 450 Market St)</div>
+            <div class="sos-delivery-tag" id="sos-delivery-tag">🛡️ Broadcasted to: Lakshmi, Suresh, Kavya, Prasad</div>
           </div>
           <div class="sos-alert-actions">
             <button id="btn-family-call-user" class="btn-family-action btn-call-alarm">
-              📞 Call User Immediately
+              📞 Call Ravi Immediately
             </button>
             <button id="btn-family-ack-sos" class="btn-family-action btn-ack-alarm">
               ✅ Acknowledge Alert
@@ -485,7 +595,7 @@ BATCH: #AC-99214
           <div class="fam-vital-card">
             <div class="f-icon">🔋</div>
             <div class="f-info">
-              <span class="f-label">Battery Level</span>
+              <span class="f-label">Ravi's Battery</span>
               <strong class="f-val" id="fam-battery-val">88% (Healthy)</strong>
             </div>
           </div>
@@ -506,7 +616,7 @@ BATCH: #AC-99214
           <div class="fam-vital-card">
             <div class="f-icon">🛡️</div>
             <div class="f-info">
-              <span class="f-label">Consent Status</span>
+              <span class="f-label">Sharing Status</span>
               <strong class="f-val" id="fam-consent-val">Active Sharing</strong>
             </div>
           </div>
@@ -516,7 +626,7 @@ BATCH: #AC-99214
         <div class="family-card map-card">
           <div class="card-header-flex">
             <div>
-              <div class="card-badge">Live Location Tracker</div>
+              <div class="card-badge">Ravi's Live Location Tracker</div>
               <div class="map-address" id="fam-map-address">Near 450 Market Street, San Francisco, CA</div>
             </div>
             <a id="btn-open-external-map" href="https://maps.google.com/?q=37.7749,-122.4194" target="_blank" class="btn-acc-pill">
@@ -524,20 +634,16 @@ BATCH: #AC-99214
             </a>
           </div>
 
-          <!-- Simulated Live Street & GPS Pin Visualizer -->
           <div class="simulated-map-canvas">
             <div class="map-grid-lines"></div>
-            <!-- Street Labels -->
             <div class="street-label-h">MARKET STREET</div>
             <div class="street-label-v">4th AVENUE</div>
-            <!-- Safe Zone Geofence Circle -->
             <div class="geofence-circle" title="Safe Zone Geofence (500m radius)"></div>
-            <!-- Live User Position Marker -->
             <div class="user-live-pin" id="user-live-pin" title="User Current Location">
               <div class="pin-radar-ring"></div>
               <div class="pin-dot"></div>
               <div class="pin-bearing-arrow" id="pin-bearing-arrow"></div>
-              <span class="pin-name-tag">User (Live)</span>
+              <span class="pin-name-tag">Ravi (Live)</span>
             </div>
           </div>
           <div class="map-footer-meta">
@@ -547,31 +653,42 @@ BATCH: #AC-99214
           </div>
         </div>
 
-        <!-- Caregiver Quick Actions -->
+        <!-- Caregiver Remote Actions (Call, Ping, Spoken Voice) -->
         <div class="family-card actions-card">
-          <div class="card-badge">Caregiver Remote Actions</div>
+          <div class="card-badge">Caregiver Remote Communication Actions</div>
           <div class="fam-actions-row">
             <!-- 1. Send Check-In Ping -->
             <button id="btn-send-checkin" class="btn-giant-action btn-action-primary">
               <span class="action-icon">👋</span>
               <span>Send Check-In Ping</span>
             </button>
-            <!-- 2. Direct Call -->
+            <!-- 2. Direct Call Ravi -->
             <button id="btn-fam-call" class="btn-giant-action">
               <span class="action-icon">📞</span>
-              <span>Call User Phone</span>
+              <span id="label-fam-call-btn">Call Ravi's Phone</span>
             </button>
           </div>
 
-          <!-- 3. Speak Message to User's Phone -->
+          <!-- 3. Send Voice Message / Spoken Audio to Ravi -->
           <div class="speak-message-box">
-            <label for="input-family-msg" class="msg-label">Send Spoken Voice Message to User's Device:</label>
+            <label for="input-family-msg" class="msg-label">Send Spoken Voice Message to Ravi's Device:</label>
             <div class="msg-input-row">
-              <input type="text" id="input-family-msg" placeholder="e.g., 'Hi, remember to take your umbrella!'" class="fam-input-text">
+              <input type="text" id="input-family-msg" placeholder="e.g., 'Hi Ravi, remember to take your umbrella!'" class="fam-input-text">
               <button id="btn-send-spoken-msg" class="btn-acc-pill btn-primary-pill">
-                🗣️ Speak on User Device
+                🗣️ Speak on Ravi's Phone
               </button>
             </div>
+          </div>
+        </div>
+
+        <!-- Voice Messages Received from Ravi -->
+        <div class="family-card received-voice-card">
+          <div class="card-header-flex">
+            <div class="card-badge">🎙️ Voice Recordings Received from Ravi</div>
+            <span class="badge-count" id="family-voice-count">1 message</span>
+          </div>
+          <div class="family-voice-messages-list" id="family-voice-messages-list">
+            <!-- Dynamically populated with playable audio voice notes -->
           </div>
         </div>
 
@@ -582,27 +699,25 @@ BATCH: #AC-99214
             <button id="btn-clear-feed" class="btn-acc-pill btn-subtle-pill">Clear Feed</button>
           </div>
           <div class="notif-feed-list" id="notif-feed-list">
-            <!-- Populated dynamically when user takes actions or SOS triggers -->
-            <div class="notif-item notif-info">
-              <span class="notif-icon">🛡️</span>
-              <div class="notif-body">
-                <div class="notif-title">Location Sharing Initialized</div>
-                <div class="notif-detail">User granted consent-based location sharing with Caregiver ID #JD-8942.</div>
-                <div class="notif-timestamp">Today at 1:00 PM</div>
-              </div>
-            </div>
+            <!-- Dynamically populated -->
           </div>
         </div>
 
-        <!-- Caregiver Pairing & Audit Security -->
+        <!-- Registered Family Members & Pairing Token -->
         <div class="family-card pairing-card">
-          <div class="card-badge">Cryptographic Pairing & Security Token</div>
-          <div class="pairing-details-flex">
+          <div class="card-badge">Registered Family Members (Mutual Encrypted Sync)</div>
+          <div class="family-members-chips-grid">
+            <div class="member-chip">👩 Lakshmi (Mother) • +91 98480 22338</div>
+            <div class="member-chip">👨 Suresh (Father) • +91 98480 22339</div>
+            <div class="member-chip">👩 Kavya (Sister) • +91 98480 22340</div>
+            <div class="member-chip">👨 Prasad (Brother) • +91 98480 22341</div>
+          </div>
+          <div class="pairing-details-flex" style="margin-top: 8px;">
             <div>
               <div class="pair-label">Active Pairing Passkey:</div>
               <div class="pair-code">H7-9K2</div>
             </div>
-            <div class="pair-status-tag">Status: Paired & Verified (SHA-256)</div>
+            <div class="pair-status-tag">Status: 4 Family Members Verified (SHA-256)</div>
           </div>
         </div>
 
@@ -610,6 +725,49 @@ BATCH: #AC-99214
 
     </div>
 
+  </div>
+
+  <!-- ====================================================================
+       OVERLAYS: INCOMING CALL & ACTIVE CALL MODALS
+       ==================================================================== -->
+  
+  <!-- 1. User Dashboard Incoming Call Overlay -->
+  <div id="user-incoming-call-modal" class="incoming-call-modal hidden" role="alertdialog" aria-modal="true" aria-labelledby="call-caller-name">
+    <div class="incoming-call-box">
+      <div class="call-avatar-ring">
+        <span class="call-avatar-icon" id="call-caller-avatar">👩</span>
+      </div>
+      <div class="call-type-title">Incoming Family Call</div>
+      <div class="call-caller-name" id="call-caller-name">Lakshmi (Mother)</div>
+      <div class="call-caller-phone" id="call-caller-phone">+91 98480 22338</div>
+      <div class="call-ring-sub">Ringing Ravi's phone...</div>
+      <div class="call-actions-row">
+        <button id="btn-call-answer" class="btn-call-action btn-call-answer">
+          <span class="call-btn-icon">📞</span>
+          <span>Answer</span>
+        </button>
+        <button id="btn-call-decline" class="btn-call-action btn-call-decline">
+          <span class="call-btn-icon">✖️</span>
+          <span>Decline</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Active Connected Call Modal -->
+  <div id="user-active-call-modal" class="active-call-modal hidden" role="dialog" aria-modal="true">
+    <div class="active-call-box">
+      <div class="active-call-header">
+        <div class="active-call-pulse-dot"></div>
+        <div class="active-call-title">Call Connected</div>
+      </div>
+      <div class="active-call-person" id="active-call-person">Lakshmi (Mother)</div>
+      <div class="active-call-timer" id="active-call-timer">00:00</div>
+      <div class="active-call-sub">Voice stream active via Web Audio. Speak freely.</div>
+      <button id="btn-call-end" class="btn-call-action btn-call-end">
+        <span>🔴 End Call</span>
+      </button>
+    </div>
   </div>
 
   <script src="app.js"></script>
