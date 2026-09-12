@@ -445,9 +445,45 @@ function promptSimulatedVoice() {
   }, 350);
 }
 
+
+/* ==========================================================================
+   VOICE FEATURE ACTIVATOR FOR BLIND USER (RAVI)
+   Actuates icons, switches panels, triggers actions, and provides voice notes
+   ========================================================================== */
+function activateFeatureByVoice(panelId, voiceResponse) {
+  // 1. Switch active panel
+  switchUserSubpanel(panelId);
+
+  // 2. Pulse and highlight the corresponding feature tile for Ravi
+  const targetTile = document.querySelector(`.feat-tile[data-panel="${panelId}"]`);
+  document.querySelectorAll('.feat-tile').forEach(t => {
+    t.classList.remove('voice-activated-pulse');
+    t.classList.remove('active');
+    t.setAttribute('aria-selected', 'false');
+  });
+
+  if (targetTile) {
+    targetTile.classList.add('active');
+    targetTile.classList.add('voice-activated-pulse');
+    targetTile.setAttribute('aria-selected', 'true');
+    targetTile.focus();
+    setTimeout(() => {
+      targetTile.classList.remove('voice-activated-pulse');
+    }, 2800);
+  }
+
+  // 3. Audio Earcon
+  earcons.commandRecognized();
+
+  // 4. Speak response
+  if (voiceResponse) {
+    speak(voiceResponse);
+  }
+}
+
 function handleVoiceCommand(rawCmd) {
   earcons.commandRecognized();
-  const cmd = rawCmd.toLowerCase();
+  const cmd = rawCmd.toLowerCase().trim();
   const label = document.getElementById('voice-transcript-content');
   if (label) label.textContent = `"${rawCmd}"`;
 
@@ -458,27 +494,34 @@ function handleVoiceCommand(rawCmd) {
       initiateOutgoingCall(targetMember);
       return;
     } else {
-      // Ambiguous or not specified
       promptDisambiguateCall();
       return;
     }
   }
 
-  // 2. Navigation & Geolocation
-  if (cmd.includes('where am i') || cmd.includes('location')) {
-    speak(`You are near 450 Market Street, facing ${getHeadingName(state.userLocation.heading)}.`);
-  } else if (cmd.includes('navigate to hospital') || cmd.includes('route to hospital') || cmd.includes('hospital')) {
-    switchUserSubpanel('panel-nearby');
-    selectAmenityRoute(amenitiesData[0]); // City General Hospital
-  } else if (cmd.includes('navigate to pharmacy') || cmd.includes('pharmacy')) {
-    switchUserSubpanel('panel-nearby');
-    selectAmenityRoute(amenitiesData[1]); // Community Pharmacy
-  } else if (cmd.includes('navigate') || cmd.includes('route')) {
-    switchUserSubpanel('panel-nearby');
-    speak("Opening Nearby amenities. Select a place to view walking directions.");
-  } else if (
+  // 2. Camera Controls: "turn camera", "open camera", "show camera", "camera", "start camera"
+  if (
+    cmd.includes("turn camera") ||
+    cmd.includes("open camera") ||
+    cmd.includes("show camera") ||
+    cmd.includes("turn on camera") ||
+    cmd.includes("start camera") ||
+    cmd.includes("activate camera") ||
+    cmd === "camera"
+  ) {
+    activateFeatureByVoice(
+      'panel-camera',
+      "Opening camera, Ravi. Point your camera at any object and say 'what is this' or 'identify object' to hear what is in front of you."
+    );
+    return;
+  }
+
+  // 3. Object Identification & Scene Understanding: "what is this", "what am i holding", "identify object", "what is happening"
+  if (
     cmd.includes("what is this") ||
     cmd.includes("what am i holding") ||
+    cmd.includes("what am i seeing") ||
+    cmd.includes("identify object") ||
     cmd.includes("identify") ||
     cmd.includes("what is in front") ||
     cmd.includes("what's in front") ||
@@ -486,37 +529,216 @@ function handleVoiceCommand(rawCmd) {
     cmd.includes("what's happening") ||
     cmd.includes("describe scene") ||
     cmd.includes("describe") ||
-    cmd.includes("camera") ||
-    cmd.includes("see")
+    cmd.includes("what do you see") ||
+    cmd.includes("scan item")
   ) {
-    switchUserSubpanel('panel-camera');
+    activateFeatureByVoice('panel-camera', null);
     identifyObjectShown(true);
-  } else if (cmd.includes('read') || cmd.includes('ocr') || cmd.includes('document')) {
-    switchUserSubpanel('panel-reader');
-    readCurrentDocument();
-  } else if (cmd.includes('start recording') || cmd.includes('record voice') || cmd.includes('record')) {
-    switchUserSubpanel('panel-memos');
+    return;
+  }
+
+  // 4. Navigation & Route Guidance: "turn on navigate route", "navigate", "route", "start navigation"
+  if (
+    cmd.includes("turn on navigate route") ||
+    cmd.includes("turn on navigate") ||
+    cmd.includes("open navigate") ||
+    cmd.includes("navigate route") ||
+    cmd.includes("start navigate") ||
+    cmd.includes("start navigation") ||
+    cmd.includes("start route") ||
+    cmd.includes("walking route") ||
+    cmd.includes("walk route") ||
+    cmd.includes("navigate to hospital") ||
+    cmd.includes("route to hospital") ||
+    cmd === "navigate" ||
+    cmd === "navigation" ||
+    cmd === "route"
+  ) {
+    activateFeatureByVoice(
+      'panel-navigate',
+      `Navigation route active, Ravi. Walking to ${state.activeDestination.name}. Step 1: ${state.activeDestination.steps[0].instruction}.`
+    );
+    startVoiceGuidance();
+    return;
+  }
+
+  if (cmd.includes("navigate to pharmacy") || cmd.includes("route to pharmacy")) {
+    activateFeatureByVoice('panel-nearby', null);
+    selectAmenityRoute(amenitiesData[1]); // Community Pharmacy
+    return;
+  }
+
+  // 5. Voice Recording Controls: "start recording", "record voice note", "stop recording", "send to family", "play recording"
+  if (
+    cmd.includes("start recording") ||
+    cmd.includes("record voice note") ||
+    cmd.includes("record audio") ||
+    cmd.includes("record voice") ||
+    cmd.includes("record memo") ||
+    cmd.includes("voice note") ||
+    cmd.includes("voice recording") ||
+    cmd === "record"
+  ) {
+    activateFeatureByVoice('panel-memos', null);
     startAudioRecording();
-  } else if (cmd.includes('stop recording')) {
+    return;
+  }
+
+  if (
+    cmd.includes("stop recording") ||
+    cmd.includes("finish recording") ||
+    cmd.includes("save recording") ||
+    cmd.includes("end recording") ||
+    cmd.includes("stop voice note")
+  ) {
     stopAudioRecording();
-  } else if (cmd.includes('send to family') || cmd.includes('send this to family')) {
+    return;
+  }
+
+  if (
+    cmd.includes("send to family") ||
+    cmd.includes("send voice note") ||
+    cmd.includes("send recording") ||
+    cmd.includes("send this to family") ||
+    cmd.includes("share recording") ||
+    cmd.includes("send memo")
+  ) {
     if (state.recordings.length > 0) {
       sendRecordingToFamily(state.recordings[0].id);
     } else {
-      speak("You have no saved recordings to send. Record an audio memo first.");
+      speak("You have no saved recordings to send, Ravi. Say 'start recording' to create a voice note first.");
     }
-  } else if (cmd.includes('sos') || cmd.includes('help') || cmd.includes('emergency')) {
-    switchUserSubpanel('panel-safety');
+    return;
+  }
+
+  if (
+    cmd.includes("play recording") ||
+    cmd.includes("play voice note") ||
+    cmd.includes("listen to recording") ||
+    cmd.includes("listen to voice note") ||
+    cmd.includes("replay recording") ||
+    cmd.includes("play memo")
+  ) {
+    if (state.recordings.length > 0) {
+      playRecordingAudio(state.recordings[0].id);
+    } else {
+      speak("You have no saved voice notes yet, Ravi. Say 'start recording' to capture your first audio message.");
+    }
+    return;
+  }
+
+  // 6. Read / OCR Document Scanner: "read", "read document", "read medicine", "ocr"
+  if (
+    cmd.includes("read document") ||
+    cmd.includes("read medicine") ||
+    cmd.includes("read prescription") ||
+    cmd.includes("document reader") ||
+    cmd.includes("ocr") ||
+    cmd.includes("scan document") ||
+    cmd.includes("read text") ||
+    cmd.includes("read aloud") ||
+    cmd === "read"
+  ) {
+    activateFeatureByVoice(
+      'panel-reader',
+      "Opening Document Reader, Ravi. Reading prescription label: Acetaminophen 500 mg. Dosage: Take 1 tablet every 6 hours with a full glass of water. Expiration date: November 2027."
+    );
+    readCurrentDocument();
+    return;
+  }
+
+  // 7. Nearby Places & Amenities: "nearby", "nearby places", "amenities", "hospital", "pharmacy"
+  if (
+    cmd.includes("nearby places") ||
+    cmd.includes("find nearby") ||
+    cmd.includes("amenities") ||
+    cmd.includes("find hospital") ||
+    cmd.includes("find pharmacy") ||
+    cmd.includes("find atm") ||
+    cmd.includes("bus stand") ||
+    cmd === "nearby"
+  ) {
+    activateFeatureByVoice(
+      'panel-nearby',
+      "Nearby amenities open, Ravi. Nearest are City General Hospital 2.4 km ahead, and Community Pharmacy 120 meters at 1 o'clock. Say 'route to hospital' or 'route to pharmacy' to navigate."
+    );
+    return;
+  }
+
+  // 8. Safety & Emergency SOS: "safety", "emergency", "sos", "help", "alert family"
+  if (
+    cmd.includes("emergency") ||
+    cmd.includes("sos") ||
+    cmd.includes("help") ||
+    cmd.includes("safety") ||
+    cmd.includes("alert family") ||
+    cmd.includes("emergency help")
+  ) {
+    activateFeatureByVoice(
+      'panel-safety',
+      "Safety center opened, Ravi. Emergency SOS countdown activated. Broadcasting your GPS coordinates to Lakshmi, Suresh, Kavya, and Prasad."
+    );
     startSosCountdown();
-  } else if (cmd.includes('stop') || cmd.includes('cancel')) {
+    return;
+  }
+
+  // 9. Family Messages & Notifications: "family messages", "messages", "notifications", "updates"
+  if (
+    cmd.includes("family messages") ||
+    cmd.includes("messages") ||
+    cmd.includes("notifications") ||
+    cmd.includes("family updates") ||
+    cmd.includes("updates") ||
+    cmd.includes("inbox") ||
+    cmd.includes("check messages")
+  ) {
+    activateFeatureByVoice(
+      'panel-notifications',
+      "Family messages open, Ravi. You have 2 new updates: Lakshmi sent a check-in ping, and Suresh sent a voice note: 'Hi Ravi, hope your walk is going well'."
+    );
+    return;
+  }
+
+  // 10. Settings: "settings", "options", "preferences"
+  if (
+    cmd.includes("settings") ||
+    cmd.includes("options") ||
+    cmd.includes("preferences") ||
+    cmd.includes("speed") ||
+    cmd.includes("contrast")
+  ) {
+    activateFeatureByVoice(
+      'panel-settings',
+      "Accessibility settings open, Ravi. High contrast is active, speech speed is set to normal."
+    );
+    return;
+  }
+
+  // 11. Where Am I & Heading
+  if (cmd.includes("where am i") || cmd.includes("my location") || cmd.includes("address")) {
+    speak(`Ravi, you are near 450 Market Street, San Francisco, facing ${getHeadingName(state.userLocation.heading)} 358 degrees. GPS accuracy is high.`);
+    return;
+  }
+
+  if (cmd.includes("compass") || cmd.includes("heading") || cmd.includes("direction") || cmd.includes("which direction")) {
+    speak(`Facing ${getHeadingName(state.userLocation.heading)}, ${Math.round(state.userLocation.heading)} degrees.`);
+    return;
+  }
+
+  // 12. Stop / Cancel
+  if (cmd.includes("stop") || cmd.includes("cancel") || cmd.includes("pause") || cmd.includes("be quiet") || cmd.includes("shut up")) {
     window.speechSynthesis.cancel();
+    if (state.isRecording) stopAudioRecording();
     if (state.isSosActive) cancelSosCountdown();
     if (state.activeCall.isInCall) endCurrentCall();
-    speak("Action stopped.");
-  } else {
-    speak(`I heard: "${rawCmd}". Say call Lakshmi, call Suresh, navigate to hospital, describe scene, or emergency SOS.`);
+    speak("Action stopped, Ravi.");
+    return;
   }
+
+  // Fallback
+  speak(`I heard: "${rawCmd}", Ravi. Say "turn camera", "turn on navigate route", "start recording", "read", "nearby", or "call Lakshmi".`);
 }
+
 
 function resolveFamilyMemberFromVoice(cmd) {
   // Check names directly
@@ -1107,13 +1329,20 @@ async function identifyObjectShown(speakAloud = true) {
   const hudConf = document.getElementById('hud-confidence');
   const sceneText = document.getElementById('scene-description-text');
 
+  // Camera Voice Note Card Elements
+  const vnObjName = document.getElementById('voicenote-obj-name');
+  const vnStatus = document.getElementById('voicenote-status-pill');
+  const vnTime = document.getElementById('voicenote-time');
+  const vnText = document.getElementById('voicenote-text');
+
   if (hudStatus) hudStatus.textContent = "Analyzing Camera View...";
 
-  // Play earcon ping
   earcons.commandRecognized();
 
   const detection = await analyzeCurrentCameraFrame();
   drawDetectionToCanvas(detection);
+
+  const nowTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
   if (detection.detected) {
     if (hudStatus) hudStatus.textContent = "Object Identified Clearly";
@@ -1122,8 +1351,21 @@ async function identifyObjectShown(speakAloud = true) {
     if (hudConf) hudConf.textContent = `Confidence: ${Math.round(detection.confidence * 100)}%`;
     if (sceneText) sceneText.textContent = detection.whatIsHappening;
 
+    // Update Camera Voice Note Card
+    if (vnObjName) vnObjName.textContent = `${detection.icon} ${detection.name}`;
+    if (vnStatus) vnStatus.textContent = "Identified";
+    if (vnTime) vnTime.textContent = nowTime;
+    if (vnText) vnText.textContent = detection.whatIsHappening;
+
+    state.lastCameraVoiceNote = {
+      name: detection.name,
+      icon: detection.icon,
+      text: detection.whatIsHappening,
+      time: nowTime
+    };
+
     if (speakAloud) {
-      speak(`${detection.name} detected clearly. ${detection.whatIsHappening}`);
+      speak(`Voice note for Ravi: ${detection.name} detected clearly. ${detection.whatIsHappening}`);
     }
   } else {
     if (hudStatus) hudStatus.textContent = "Ready to Scan";
@@ -1132,13 +1374,17 @@ async function identifyObjectShown(speakAloud = true) {
     if (hudConf) hudConf.textContent = "Camera View Clear";
     if (sceneText) sceneText.textContent = detection.whatIsHappening;
 
+    if (vnObjName) vnObjName.textContent = "No Object Detected";
+    if (vnStatus) vnStatus.textContent = "Standby";
+    if (vnTime) vnTime.textContent = nowTime;
+    if (vnText) vnText.textContent = detection.whatIsHappening;
+
     if (speakAloud) {
-      speak(detection.whatIsHappening);
+      speak(`Voice note for Ravi: ${detection.whatIsHappening}`);
     }
   }
 }
 
-// What's Happening in Camera View
 async function describeCurrentScene(speakAloud = true) {
   await identifyObjectShown(speakAloud);
 }
@@ -1435,10 +1681,53 @@ function stopAudioRecording() {
   }
 }
 
-function createSyntheticToneAudioUrl() {
-  // Generates a simple valid playable WAV audio URI for fallback environments
-  // 1-second clean chime WAV header
-  return "data:audio/wav;base64,UklGRjIAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YRAAAACAgICAgICAgICAgICAgICA";
+function createSyntheticToneAudioUrl(frequency = 440, durationSec = 3) {
+  // Generates an audible 16-bit PCM WAV melodic chime for Ravi's voice notes
+  const sampleRate = 22050;
+  const numSamples = sampleRate * durationSec;
+  const buffer = new ArrayBuffer(44 + numSamples * 2);
+  const view = new DataView(buffer);
+
+  function writeString(v, offset, str) {
+    for (let j = 0; j < str.length; j++) {
+      v.setUint8(offset + j, str.charCodeAt(j));
+    }
+  }
+
+  // RIFF chunk
+  writeString(view, 0, 'RIFF');
+  view.setUint32(4, 36 + numSamples * 2, true);
+  writeString(view, 8, 'WAVE');
+
+  // fmt sub-chunk
+  writeString(view, 12, 'fmt ');
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true); // PCM format
+  view.setUint16(22, 1, true); // Mono channel
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * 2, true); // Byte rate
+  view.setUint16(32, 2, true); // Block align
+  view.setUint16(34, 16, true); // Bits per sample
+
+  // data sub-chunk
+  writeString(view, 36, 'data');
+  view.setUint32(40, numSamples * 2, true);
+
+  // Write melodic chime harmonics with smooth envelope
+  for (let i = 0; i < numSamples; i++) {
+    const t = i / sampleRate;
+    const env = Math.exp(-t * 0.9);
+    const wave = (
+      Math.sin(2 * Math.PI * 523.25 * t) * 0.6 + // C5
+      Math.sin(2 * Math.PI * 659.25 * t) * 0.3 + // E5
+      Math.sin(2 * Math.PI * 783.99 * t) * 0.2    // G5
+    ) * env;
+    const sample = Math.max(-1, Math.min(1, wave));
+    view.setInt16(44 + i * 2, sample * 32767, true);
+  }
+
+  const blob = new Blob([view], { type: 'audio/wav' });
+  return URL.createObjectURL(blob);
 }
 
 function saveNewRecording(audioUrl, blob) {
@@ -2282,4 +2571,37 @@ window.addEventListener('DOMContentLoaded', () => {
       pin.style.transform = `translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px))`;
     }
   }, 2500);
+
+  // Accessibility: Spacebar triggers voice assistant for Ravi hands-free
+  window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      toggleVoiceListening();
+    }
+  });
+
+  // Replay Camera Voice Note
+  document.getElementById('btn-replay-voicenote')?.addEventListener('click', () => {
+    if (state.lastCameraVoiceNote) {
+      speak(`Replaying voice note: ${state.lastCameraVoiceNote.name} detected clearly. ${state.lastCameraVoiceNote.text}`);
+    } else {
+      identifyObjectShown(true);
+    }
+  });
+
+  // Send Camera Voice Note to Family
+  document.getElementById('btn-send-voicenote-fam')?.addEventListener('click', () => {
+    if (state.lastCameraVoiceNote) {
+      addFamilyNotification(
+        'camera',
+        state.lastCameraVoiceNote.icon,
+        `Camera Voice Note from Ravi: ${state.lastCameraVoiceNote.name}`,
+        state.lastCameraVoiceNote.text
+      );
+      speak(`Camera voice note for ${state.lastCameraVoiceNote.name} sent to Lakshmi, Suresh, Kavya, and Prasad.`);
+    } else {
+      speak("Scan an object with the camera first to send a voice note to family, Ravi.");
+    }
+  });
+
 });

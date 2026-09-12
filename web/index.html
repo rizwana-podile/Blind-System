@@ -157,38 +157,38 @@
           </div>
         </div>
 
-        <!-- User Action Hub Tabs (Tiles) -->
+        <!-- User Action Hub Tabs (Tiles) - Fully Voice Activable for Ravi -->
         <div class="user-features-nav" role="tablist">
-          <button class="feat-tile active" data-panel="panel-navigate" aria-label="Navigate. Walking guidance and compass.">
+          <button class="feat-tile active" id="tile-navigate" data-panel="panel-navigate" aria-label="Navigate. Walking guidance and compass. Voice: 'turn on navigate route'">
             <span class="feat-icon">🧭</span>
             <span class="feat-name">Navigate</span>
           </button>
-          <button class="feat-tile" data-panel="panel-camera" aria-label="Camera. Continuous live object identification.">
+          <button class="feat-tile" id="tile-camera" data-panel="panel-camera" aria-label="Camera. Object identification and scene assistance. Voice: 'turn camera' or 'open camera'">
             <span class="feat-icon">📷</span>
             <span class="feat-name">Camera</span>
           </button>
-          <button class="feat-tile" data-panel="panel-reader" aria-label="Read. OCR text scanner for documents and medicine labels.">
+          <button class="feat-tile" id="tile-reader" data-panel="panel-reader" aria-label="Read. OCR text scanner for documents and medicine labels. Voice: 'read' or 'read document'">
             <span class="feat-icon">📖</span>
             <span class="feat-name">Read</span>
           </button>
-          <button class="feat-tile" data-panel="panel-nearby" aria-label="Nearby. Search amenities and get turn-by-turn routes.">
+          <button class="feat-tile" id="tile-nearby" data-panel="panel-nearby" aria-label="Nearby. Search amenities and get turn-by-turn routes. Voice: 'nearby' or 'hospital'">
             <span class="feat-icon">🏥</span>
             <span class="feat-name">Nearby</span>
           </button>
-          <button class="feat-tile feat-tile-sos" data-panel="panel-safety" aria-label="Safety and Emergency SOS to all family.">
+          <button class="feat-tile feat-tile-sos" id="tile-safety" data-panel="panel-safety" aria-label="Safety and Emergency SOS to all family. Voice: 'safety' or 'emergency' or 'help'">
             <span class="feat-icon">🚨</span>
             <span class="feat-name">Safety</span>
           </button>
-          <button class="feat-tile" data-panel="panel-memos" aria-label="Record. Capture real audio and send to family.">
+          <button class="feat-tile" id="tile-memos" data-panel="panel-memos" aria-label="Record. Capture real audio and send to family. Voice: 'record' or 'voice note' or 'start recording'">
             <span class="feat-icon">🎙️</span>
             <span class="feat-name">Record</span>
           </button>
-          <button class="feat-tile feat-tile-notif" data-panel="panel-notifications" aria-label="Family Messages and incoming updates.">
+          <button class="feat-tile feat-tile-notif" id="tile-notifications" data-panel="panel-notifications" aria-label="Family Messages and incoming updates. Voice: 'family messages'">
             <span class="feat-icon">🔔</span>
             <span class="feat-name">Family Msg</span>
             <span class="tile-badge-num" id="tile-notif-count">2</span>
           </button>
-          <button class="feat-tile" data-panel="panel-settings" aria-label="Accessibility Settings.">
+          <button class="feat-tile" id="tile-settings" data-panel="panel-settings" aria-label="Accessibility Settings. Voice: 'settings'">
             <span class="feat-icon">⚙️</span>
             <span class="feat-name">Settings</span>
           </button>
@@ -269,25 +269,30 @@
               </div>
             </div>
 
-            <!-- Interactive Object Presentation Bar (For testing or simulated input) -->
-            <div class="camera-presentation-bar" id="camera-presentation-bar">
-              <div class="pres-header">
-                <span class="pres-label">Show Object to Camera:</span>
-                <span class="pres-hint">(Click to present item directly to camera)</span>
+                        <!-- Camera Voice Note Card (Responds with item name & detailed scene description) -->
+            <div class="subpanel-card camera-voicenote-card" id="camera-voicenote-card" aria-live="polite">
+              <div class="card-badge">🎙️ Ravi's Camera Voice Note</div>
+              <div class="voicenote-header">
+                <div class="voicenote-title-block">
+                  <span class="voicenote-obj-name" id="voicenote-obj-name">No Object Scanned Yet</span>
+                  <span class="voicenote-status-pill" id="voicenote-status-pill">Ready</span>
+                </div>
+                <span class="voicenote-time" id="voicenote-time">Standby</span>
               </div>
-              <div class="pres-pill-grid">
-                <button type="button" class="btn-pres-pill active" data-obj="none" id="pres-clear" aria-label="Clear camera view">🚫 Clear View</button>
-                <button type="button" class="btn-pres-pill" data-obj="phone" id="pres-phone" aria-label="Show Mobile Phone to camera">📱 Mobile Phone</button>
-                <button type="button" class="btn-pres-pill" data-obj="bottle" id="pres-bottle" aria-label="Show Water Bottle to camera">🍶 Water Bottle</button>
-                <button type="button" class="btn-pres-pill" data-obj="cup" id="pres-cup" aria-label="Show Coffee Cup to camera">☕ Coffee Cup</button>
-                <button type="button" class="btn-pres-pill" data-obj="book" id="pres-book" aria-label="Show Book to camera">📖 Book</button>
-                <button type="button" class="btn-pres-pill" data-obj="laptop" id="pres-laptop" aria-label="Show Laptop to camera">💻 Laptop</button>
-                <button type="button" class="btn-pres-pill" data-obj="chair" id="pres-chair" aria-label="Point at Chair">🪑 Chair</button>
-                <button type="button" class="btn-pres-pill" data-obj="person" id="pres-person" aria-label="Point at Person">🚶 Person</button>
+              <div class="voicenote-text" id="voicenote-text">
+                Say "turn camera" then "what is this?" or "identify object". SIGHTGUIDE will announce the item name in a clear voice note for Ravi.
+              </div>
+              <div class="voicenote-actions">
+                <button id="btn-replay-voicenote" class="btn-acc-pill btn-primary-pill" aria-label="Replay Camera Voice Note">
+                  ▶ Replay Voice Note
+                </button>
+                <button id="btn-send-voicenote-fam" class="btn-acc-pill btn-send-to-family" aria-label="Send Camera Voice Note to Family">
+                  📤 Send Note to Family
+                </button>
               </div>
             </div>
 
-            <!-- Primary Camera Action Controls -->
+<!-- Primary Camera Action Controls -->
             <div class="button-grid-2">
               <button id="btn-identify-object" class="btn-giant-action btn-action-primary" aria-label="Identify Object Shown to Camera">
                 <span class="action-icon">🔍</span>
