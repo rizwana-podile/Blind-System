@@ -2211,3 +2211,87 @@ body.layout-dual #family-dashboard-container {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Camera Presentation Bar & Tested Object Selector */
+.camera-presentation-bar {
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pres-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pres-label {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--accent-yellow);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pres-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.pres-pill-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn-pres-pill {
+  background: var(--bg-surface-elevated);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 6px 12px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-pres-pill:hover {
+  border-color: var(--accent-yellow);
+  color: var(--text-primary);
+}
+
+.btn-pres-pill.active {
+  background: var(--accent-yellow);
+  color: var(--accent-on-yellow);
+  border-color: var(--accent-yellow);
+  font-weight: 900;
+}
+
+.camera-secondary-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.camera-scene-card {
+  border-left: 4px solid var(--accent-yellow);
+}
+
+.viewfinder-container {
+  cursor: pointer;
+}
+
+.viewfinder-container:focus {
+  outline: 3px solid var(--accent-yellow);
+}

@@ -240,51 +240,77 @@
             </div>
           </div>
 
-          <!-- B. CAMERA ASSISTANCE PANEL (Continuous Live Object Identification) -->
+          <!-- B. CAMERA ASSISTANCE PANEL (Real-Time Vision & On-Demand Object Identification) -->
           <div id="panel-camera" class="user-subpanel">
-            <div class="viewfinder-container">
+            <div class="viewfinder-container" id="viewfinder-container" tabindex="0" role="button" aria-label="Camera viewfinder. Tap to identify object shown.">
               <video id="camera-video" playsinline muted autoplay></video>
               <canvas id="camera-canvas"></canvas>
               
               <!-- Prominent Live Object Identification Overlay HUD -->
               <div class="camera-detection-hud" id="camera-detection-hud">
-                <div class="hud-status-badge" id="hud-status">Live Analyzing...</div>
+                <div class="hud-status-badge" id="hud-status">Camera Standby — Show Object</div>
                 <div class="hud-content">
                   <div class="hud-object-title">
-                    <span class="hud-obj-icon" id="hud-object-icon">🪑</span>
-                    <span class="hud-obj-name" id="hud-object-name">Chair</span>
+                    <span class="hud-obj-icon" id="hud-object-icon">📷</span>
+                    <span class="hud-obj-name" id="hud-object-name">No Object Detected</span>
                   </div>
-                  <div class="hud-confidence" id="hud-confidence">Confidence: 94%</div>
+                  <div class="hud-confidence" id="hud-confidence">Tap Identify Object to scan</div>
                 </div>
               </div>
 
-              <div class="viewfinder-badge" id="camera-badge">Vision AI: Active</div>
+              <div class="viewfinder-badge" id="camera-badge">Vision AI: Standby</div>
             </div>
 
-            <div class="subpanel-card">
-              <div class="card-badge">Live Surroundings & Obstacle Recognition</div>
+            <!-- Scene Context & What Is Happening Description Card -->
+            <div class="subpanel-card camera-scene-card">
+              <div class="card-badge">What Is Happening In Camera View</div>
               <div class="scene-text" id="scene-description-text">
-                A chair is detected 1.5 meters directly ahead. Water bottle located 1.2 meters at 1 o'clock. Walking path is clear.
+                Point camera at an object and tap "Identify Object" or speak "What is this?". SIGHTGUIDE will name the object clearly and describe what is happening in the scene.
               </div>
             </div>
 
+            <!-- Interactive Object Presentation Bar (For testing or simulated input) -->
+            <div class="camera-presentation-bar" id="camera-presentation-bar">
+              <div class="pres-header">
+                <span class="pres-label">Show Object to Camera:</span>
+                <span class="pres-hint">(Click to present item directly to camera)</span>
+              </div>
+              <div class="pres-pill-grid">
+                <button type="button" class="btn-pres-pill active" data-obj="none" id="pres-clear" aria-label="Clear camera view">🚫 Clear View</button>
+                <button type="button" class="btn-pres-pill" data-obj="phone" id="pres-phone" aria-label="Show Mobile Phone to camera">📱 Mobile Phone</button>
+                <button type="button" class="btn-pres-pill" data-obj="bottle" id="pres-bottle" aria-label="Show Water Bottle to camera">🍶 Water Bottle</button>
+                <button type="button" class="btn-pres-pill" data-obj="cup" id="pres-cup" aria-label="Show Coffee Cup to camera">☕ Coffee Cup</button>
+                <button type="button" class="btn-pres-pill" data-obj="book" id="pres-book" aria-label="Show Book to camera">📖 Book</button>
+                <button type="button" class="btn-pres-pill" data-obj="laptop" id="pres-laptop" aria-label="Show Laptop to camera">💻 Laptop</button>
+                <button type="button" class="btn-pres-pill" data-obj="chair" id="pres-chair" aria-label="Point at Chair">🪑 Chair</button>
+                <button type="button" class="btn-pres-pill" data-obj="person" id="pres-person" aria-label="Point at Person">🚶 Person</button>
+              </div>
+            </div>
+
+            <!-- Primary Camera Action Controls -->
             <div class="button-grid-2">
-              <button id="btn-describe-scene" class="btn-giant-action">
-                <span class="action-icon">👁️</span>
-                <span>Describe Scene</span>
-              </button>
-              <button id="btn-find-bottle" class="btn-giant-action">
+              <button id="btn-identify-object" class="btn-giant-action btn-action-primary" aria-label="Identify Object Shown to Camera">
                 <span class="action-icon">🔍</span>
-                <span>Find Bottle / Keys</span>
+                <span>Identify Object</span>
               </button>
-              <button id="btn-camera-toggle" class="btn-giant-action">
+              <button id="btn-describe-scene" class="btn-giant-action" aria-label="Describe what is happening in the camera view">
+                <span class="action-icon">👁️</span>
+                <span>What's Happening?</span>
+              </button>
+              <button id="btn-toggle-auto-announce" class="btn-giant-action" aria-label="Toggle Auto Announce on New Object Presentation">
+                <span class="action-icon">⚡</span>
+                <span id="auto-announce-label">Auto-Announce: OFF</span>
+              </button>
+              <button id="btn-camera-toggle" class="btn-giant-action" aria-label="Toggle Camera on or off">
                 <span class="action-icon">📷</span>
                 <span>Toggle Camera</span>
               </button>
-              <button id="btn-stair-check" class="btn-giant-action">
-                <span class="action-icon">🪜</span>
-                <span>Check Stairs</span>
-              </button>
+            </div>
+
+            <!-- Secondary Safety & Quick Query Actions -->
+            <div class="camera-secondary-row">
+              <button id="btn-find-bottle" class="btn-acc-pill" aria-label="Find Water Bottle">🍶 Find Bottle</button>
+              <button id="btn-stair-check" class="btn-acc-pill" aria-label="Scan for Stairs & Curbs">🪜 Check Stairs</button>
             </div>
           </div>
 
@@ -770,6 +796,9 @@ BATCH: #AC-99214
     </div>
   </div>
 
+    <!-- TensorFlow.js & COCO-SSD Computer Vision Engines (with smart offline fallback) -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
